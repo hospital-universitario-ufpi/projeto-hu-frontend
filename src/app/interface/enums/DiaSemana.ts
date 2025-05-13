@@ -6,6 +6,7 @@ export enum DiaSemana{
   SEXTA = "Sexta-feira"
 }
 
+//usar dropdown
 export const DiaSemanaOptions = [
   {value: DiaSemana.SEGUNDA, label: "Segunda"},
 ]
