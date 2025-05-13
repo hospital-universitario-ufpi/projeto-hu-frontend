@@ -1,9 +1,11 @@
-export const DiaSemana = {
-  SEGUNDA: "Segunda-feira",
-  TERCA: "Terça-feira",
-  QUARTA: "Quarta-feira",
-  QUINTA: "Quinta-feira",
-  SEXTA: "Sexta-feira",
-} as const;
+export enum DiaSemana{
+  SEGUNDA = "Segunda",
+  TERCA = "Terça-feira",
+  QUARTA = "Quarta-feira",
+  QUINTA = "Quinta-feira",
+  SEXTA = "Sexta-feira"
+}
 
-export type DiaSemana = typeof DiaSemana[keyof typeof DiaSemana];
+export const DiaSemanaOptions = [
+  {value: DiaSemana.SEGUNDA, label: "Segunda"},
+]
