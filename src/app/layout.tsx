@@ -1,3 +1,4 @@
+
 import './globals.css';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -6,6 +7,7 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'HU UFPI',
   description: 'Sistema de Avaliação de Hanseníase',
+
 };
 
 export default function RootLayout({
@@ -23,3 +25,4 @@ export default function RootLayout({
     </html>
   );
 }
+
