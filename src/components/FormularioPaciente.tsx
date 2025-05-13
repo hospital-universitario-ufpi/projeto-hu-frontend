@@ -64,13 +64,13 @@ export default function FormularioPaciente({ onSalvar, dadosIniciais }: Props) {
     <section className="w-full bg-white pt-2 md:pt-6">
       <div className="w-full max-w-7xl mx-auto px-4 md:px-8 bg-white rounded-xl pt-4 pb-6 md:pt-6 md:pb-8 relative">
         <h2 className="text-green-700 font-bold text-3xl text-center mb-10">
-          Cadastro de Paciente
+          {finalizado && !modoEdicao ? "Dados do Paciente" : "Cadastro de Paciente"}
         </h2>
 
         {finalizado && (
           <button
             onClick={() => setModoEdicao((prev) => !prev)}
-            className="absolute -bottom-3 right-6 text-sm text-green-700 underline hover:text-green-900"
+            className="absolute -bottom-8 right-6 text-sm text-green-700 underline hover:text-green-900"
           >
             {modoEdicao ? "Cancelar" : "Editar Cadastro Paciente"}
           </button>
@@ -152,7 +152,7 @@ export default function FormularioPaciente({ onSalvar, dadosIniciais }: Props) {
           </div>
 
           {!finalizado || modoEdicao ? (
-            <div className="flex justify-center mt-15">
+            <div className="flex justify-center mt-16">
               <button
                 type="submit"
                 className="bg-gradient-to-r from-green-500 to-green-700 hover:from-green-600 hover:to-green-800 text-white font-bold px-8 py-4 rounded-full shadow-md transition"
