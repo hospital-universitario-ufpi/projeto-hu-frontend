@@ -64,7 +64,9 @@ export default function FormularioPaciente({ onSalvar, dadosIniciais }: Props) {
     <section className="w-full bg-white pt-2 md:pt-6">
       <div className="w-full max-w-7xl mx-auto px-4 md:px-8 bg-white rounded-xl pt-4 pb-6 md:pt-6 md:pb-8 relative">
         <h2 className="text-green-700 font-bold text-3xl text-center mb-10">
-          {finalizado && !modoEdicao ? "Dados do Paciente" : "Cadastro de Paciente"}
+          {finalizado && !modoEdicao
+            ? "Dados do Paciente"
+            : "Cadastro de Paciente"}
         </h2>
 
         {finalizado && (
@@ -80,15 +82,46 @@ export default function FormularioPaciente({ onSalvar, dadosIniciais }: Props) {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* campos */}
             {[
-              { label: "Prontuário", name: "prontuario", placeholder: "Número do prontuário", type: "text" },
-              { label: "CPF", name: "cpf", placeholder: "000.000.000-00", type: "text" },
-              { label: "Data de Nascimento", name: "dataDeNascimento", type: "date" },
-              { label: "Telefone do Paciente", name: "telefonePaciente", placeholder: "(00) 00000-0000", type: "tel" },
-              { label: "Médico que Indicou", name: "medicoIndicacao", placeholder: "Nome do médico", type: "text" },
-              { label: "Telefone do Médico", name: "telefoneMedicoIndicacao", placeholder: "(00) 00000-0000", type: "tel" },
+              {
+                label: "Prontuário",
+                name: "prontuario",
+                placeholder: "Número do prontuário",
+                type: "text",
+              },
+              {
+                label: "CPF",
+                name: "cpf",
+                placeholder: "000.000.000-00",
+                type: "text",
+              },
+              {
+                label: "Data de Nascimento",
+                name: "dataDeNascimento",
+                type: "date",
+              },
+              {
+                label: "Telefone do Paciente",
+                name: "telefonePaciente",
+                placeholder: "(00) 00000-0000",
+                type: "tel",
+              },
+              {
+                label: "Médico que Indicou",
+                name: "medicoIndicacao",
+                placeholder: "Nome do médico",
+                type: "text",
+              },
+              {
+                label: "Telefone do Médico",
+                name: "telefoneMedicoIndicacao",
+                placeholder: "(00) 00000-0000",
+                type: "tel",
+              },
             ].map(({ label, name, placeholder, type }) => (
               <div key={name}>
-                <label className="block text-green-700 font-medium mb-2">{label}</label>
+                <label className="block text-green-700 font-medium mb-2">
+                  {label}
+                </label>
                 <input
                   type={type}
                   name={name}
@@ -104,7 +137,9 @@ export default function FormularioPaciente({ onSalvar, dadosIniciais }: Props) {
 
             {/* Sexo */}
             <div>
-              <label className="block text-green-700 font-medium mb-2">Sexo</label>
+              <label className="block text-green-700 font-medium mb-2">
+                Sexo
+              </label>
               <div className="relative w-full">
                 <select
                   name="sexo"
@@ -126,7 +161,9 @@ export default function FormularioPaciente({ onSalvar, dadosIniciais }: Props) {
 
             {/* Fototipo */}
             <div>
-              <label className="block text-green-700 font-medium mb-2">Fototipo</label>
+              <label className="block text-green-700 font-medium mb-2">
+                Fototipo
+              </label>
               <div className="relative w-full">
                 <select
                   name="fototipo"
@@ -157,7 +194,9 @@ export default function FormularioPaciente({ onSalvar, dadosIniciais }: Props) {
                 type="submit"
                 className="bg-gradient-to-r from-green-500 to-green-700 hover:from-green-600 hover:to-green-800 text-white font-bold px-8 py-4 rounded-full shadow-md transition"
               >
-                {dadosIniciais || modoEdicao ? "Salvar Alterações" : "Finalizar Cadastro"}
+                {dadosIniciais || modoEdicao
+                  ? "Salvar Alterações"
+                  : "Finalizar Cadastro"}
               </button>
             </div>
           ) : null}
