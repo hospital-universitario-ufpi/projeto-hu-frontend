@@ -4,6 +4,11 @@ import React, { useState } from "react";
 import FormularioPaciente, { Paciente } from "@/components/FormularioPaciente";
 import QuestionarioHanseniase from "@/components/QuestionarioHanseniase";
 import MapaCorporal from "@/components/MapaCorporal";
+import Particularidade from "@/components/Particularidade";
+import Sessao from "@/components/Sessao";
+import Reacao from "@/components/recao";
+import FotosTratamento from "@/components/FotosTratamento";
+
 
 export default function FormularioPage() {
   const [pacienteCadastrado, setPacienteCadastrado] = useState(false);
@@ -20,7 +25,13 @@ export default function FormularioPage() {
         <>
           <QuestionarioHanseniase />
           <MapaCorporal />
+          <Particularidade />
+          <Sessao/>
+          <Reacao/>
+          <FotosTratamento/>
         </>
+
+        
       )}
     </main>
   );

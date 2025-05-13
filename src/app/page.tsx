@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 
+
 export default function HomePage() {
   return (
     <main className="flex flex-col items-center justify-center min-h-screen px-4">
@@ -16,6 +17,7 @@ export default function HomePage() {
       >
         Iniciar Cadastro Paciente
       </Link>
+      
     </main>
   );
 }
