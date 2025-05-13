@@ -1,6 +1,11 @@
-export const PacienteSexo = {
-    M : "M",
-    F : "F",
-} as const;
+export enum PacienteSexo {
+    M = "Masculino",
+    F = "Feminino",
+}
 
-export type PacienteSexo = typeof PacienteSexo[keyof typeof PacienteSexo];
+// Lista auxiliar para uso em UI (radio, botão, etc.)
+
+export const PacienteSexoOptions: { value: PacienteSexo; label: string }[] = [
+  { value: PacienteSexo.M, label: PacienteSexo.M },
+  { value: PacienteSexo.F, label: PacienteSexo.F },
+];
