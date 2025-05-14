@@ -45,18 +45,6 @@ const pacientesMock: (Paciente & { nome: string })[] = [
     telefonePaciente: "(86) 98888-0001",
     fototipo: "III",
   },
-  {
-    id: 2,
-    nome: "Maria Souza",
-    prontuario: "P124",
-    sexo: "FEMININO",
-    cpf: "222.333.444-55",
-    dataDeNascimento: "1985-06-15",
-    medicoIndicacao: "Dra. Maria",
-    telefoneMedicoIndicacao: "(86) 99999-0002",
-    telefonePaciente: "(86) 98888-0002",
-    fototipo: "II",
-  },
 ];
 
 export default function VisualizarPaciente() {
@@ -76,9 +64,7 @@ export default function VisualizarPaciente() {
   return (
     <main className="min-h-screen px-4 py-8 bg-gray-50 flex flex-col items-center">
       <div className="w-full max-w-5xl bg-white p-6 rounded-xl shadow space-y-10">
-        <h1 className="text-2xl font-bold text-green-700 text-center">
-          Detalhes do Paciente
-        </h1>
+        <h1 className="text-2xl font-bold text-green-700 text-center">Detalhes do Paciente</h1>
 
         {paciente ? (
           <>
@@ -105,27 +91,30 @@ export default function VisualizarPaciente() {
               </Link>
 
               {tratamentos.length > 0 ? (
-                <ul className="mt-4 space-y-2">
+                <ul className="mt-4 space-y-4">
                   {tratamentos.map((t) => {
-                    const estaAberto = tratamentoExpandido === t.id;
+                    const aberto = tratamentoExpandido === t.id;
                     return (
-                      <li key={t.id} className="bg-gray-100 p-4 rounded-lg shadow space-y-2">
+                      <li
+                        key={t.id}
+                        className="bg-green-50 border border-green-300 p-4 rounded-lg shadow space-y-2"
+                      >
                         <p className="font-semibold text-green-800">
                           Tratamento #{t.id} - {t.data}
                         </p>
-                        <p>→ Mapa preenchido: {Object.keys(t.mapa).length > 0 ? "Sim" : "Não"}</p>
-                        <p>→ Exames: {t.exames.length}</p>
-                        <p>→ Particularidades: {Object.keys(t.particularidades).length}</p>
+                        <p className="text-green-700">→ Mapa preenchido: {Object.keys(t.mapa).length > 0 ? "Sim" : "Não"}</p>
+                        <p className="text-green-700">→ Exames: {t.exames.length}</p>
+                        <p className="text-green-700">→ Particularidades: {Object.keys(t.particularidades).length}</p>
 
                         <button
-                          onClick={() => setTratamentoExpandido(estaAberto ? null : t.id)}
+                          onClick={() => setTratamentoExpandido(aberto ? null : t.id)}
                           className="text-sm text-green-600 underline"
                         >
-                          {estaAberto ? "Ocultar Detalhes" : "Visualizar Detalhes"}
+                          {aberto ? "Ocultar Detalhes" : "Visualizar Detalhes"}
                         </button>
 
-                        {estaAberto && (
-                          <div className="bg-white border border-green-300 rounded-lg p-4 mt-2 space-y-3 text-sm">
+                        {aberto && (
+                          <div className="bg-green-5 border border-green-300 rounded-lg p-4 mt-2 space-y-3 text-sm">
                             <div>
                               <h4 className="font-semibold text-green-700">Mapa Corporal:</h4>
                               <ul className="list-disc list-inside">
@@ -139,7 +128,12 @@ export default function VisualizarPaciente() {
                               <ul className="list-disc list-inside">
                                 {t.exames.map((exame, i) => (
                                   <li key={i}>
-                                    {exame.nomeExame} ({exame.exameTipo}) - {exame.resultadoNumerico || exame.resultadoBoolean?.toString() || exame.resultadoOutro}
+                                    {exame.nomeExame} ({exame.exameTipo}) -{" "}
+                                    {exame.exameTipo === "NUMERICO"
+                                      ? exame.resultadoNumerico
+                                      : exame.exameTipo === "BOOLEANO"
+                                      ? exame.resultadoBoolean ? "Sim" : "Não"
+                                      : exame.resultadoOutro}
                                   </li>
                                 ))}
                               </ul>
@@ -148,7 +142,9 @@ export default function VisualizarPaciente() {
                               <h4 className="font-semibold text-green-700">Particularidades:</h4>
                               <ul className="list-disc list-inside">
                                 {Object.entries(t.particularidades).map(([chave, valor]) => (
-                                  <li key={chave}>{chave}: {valor.toString()}</li>
+                                  <li key={chave}>
+                                    {chave}: {typeof valor === "boolean" ? (valor ? "Sim" : "Não") : valor}
+                                  </li>
                                 ))}
                               </ul>
                             </div>
