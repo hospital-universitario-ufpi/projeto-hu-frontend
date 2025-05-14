@@ -12,11 +12,10 @@ export default function HomePage() {
           Sistema de Avaliação para Tratamento por Fototerapia
         </h1>
 
-
         <div className="flex flex-col gap-4 items-center">
           {/* Botão 1 - Novo cadastro */}
           <Link
-            href="/formulario"
+            href="/formulariopaciente"
             className="bg-green-700 text-white px-6 py-3 rounded-full hover:bg-green-800 transition w-full max-w-sm text-center"
           >
             📝 Cadastrar Novo Paciente

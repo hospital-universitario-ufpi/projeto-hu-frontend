@@ -1,9 +1,24 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-export default function SecaoExames() {
-  const [exames] = useState([
+export type Exame = {
+  exameTipo: string;
+  nomeExame: string;
+  resultadoNumerico?: string;
+  resultadoBoolean?: boolean;
+  resultadoOutro?: string;
+  dataExame: string;
+  laboratorio: string;
+  observacao?: string;
+};
+
+type Props = {
+  onChange?: (exames: Exame[]) => void;
+};
+
+export default function SecaoExames({ onChange }: Props) {
+  const [exames, setExames] = useState<Exame[]>([
     {
       nomeExame: "Hemograma Completo",
       exameTipo: "NUMERICO",
@@ -30,8 +45,36 @@ export default function SecaoExames() {
     }
   ]);
 
+  // Dispara onChange sempre que os exames forem atualizados
+  useEffect(() => {
+    onChange?.(exames);
+  }, [exames, onChange]);
+
+  // Adiciona um exame de exemplo (pode ser adaptado depois)
+  const adicionarExame = (novo: Exame) => {
+    setExames((prev) => [...prev, novo]);
+  };
+
   return (
     <section className="space-y-6">
+      <h2 className="text-xl font-bold text-green-700">Exames</h2>
+
+      <button
+        onClick={() =>
+          adicionarExame({
+            nomeExame: "Novo Exame",
+            exameTipo: "NUMERICO",
+            resultadoNumerico: "5.1",
+            dataExame: new Date().toISOString().split("T")[0],
+            laboratorio: "Lab Teste",
+            observacao: "Exame de teste"
+          })
+        }
+        className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition text-sm"
+      >
+        + Adicionar Exame de Teste
+      </button>
+
       {exames.map((exame, index) => (
         <div
           key={index}

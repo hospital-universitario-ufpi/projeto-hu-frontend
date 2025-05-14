@@ -1,7 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
+
+type Props = {
+  onChange?: (dados: { [regiao: string]: number }) => void;
+};
 
 const regioes = [
   { nome: "Cabeça e Pescoço", key: "cabecaPescoco", top: "7%", left: "24%" },
@@ -14,12 +18,8 @@ const regioes = [
   { nome: "Genitália", key: "genitalia", top: "56%", left: "25%" },
 ];
 
-type Props = {
-  modoVisualizacao?: boolean;
-};
-
-export default function MapaCorporal({ modoVisualizacao = false }: Props) {
-  const [porcentagens, setPorcentagens] = useState({
+export default function MapaCorporal({ onChange }: Props) {
+  const [porcentagens, setPorcentagens] = useState<{ [regiao: string]: number }>({
     cabecaPescoco: 0,
     bracoDireito: 0,
     bracoEsquerdo: 0,
@@ -32,8 +32,14 @@ export default function MapaCorporal({ modoVisualizacao = false }: Props) {
 
   const total = Object.values(porcentagens).reduce((acc, val) => acc + val, 0);
 
+  useEffect(() => {
+    onChange?.(porcentagens); // dispara o estado inicial
+  }, []);
+
   const handleInput = (key: string, value: number) => {
-    setPorcentagens((prev) => ({ ...prev, [key]: value }));
+    const novo = { ...porcentagens, [key]: value };
+    setPorcentagens(novo);
+    onChange?.(novo); // dispara a cada mudança
   };
 
   return (
@@ -83,29 +89,22 @@ export default function MapaCorporal({ modoVisualizacao = false }: Props) {
               <label className="w-40 text-green-700 font-medium">
                 {regiao.nome}
               </label>
-              {modoVisualizacao ? (
-                <span className="text-gray-800">{porcentagens[regiao.key]}%</span>
-              ) : (
-                <>
-                  <input
-                    type="number"
-                    className="w-20 p-2 border border-green-300 rounded text-green-700"
-                    value={porcentagens[regiao.key]}
-                    onChange={(e) =>
-                      handleInput(
-                        regiao.key,
-                        Math.min(100, Math.max(0, Number(e.target.value)))
-                      )
-                    }
-                    min={0}
-                    max={100}
-                  />
-                  <span className="text-sm text-gray-600">%</span>
-                </>
-              )}
+              <input
+                type="number"
+                className="w-20 p-2 border border-green-300 rounded text-green-700"
+                value={porcentagens[regiao.key]}
+                onChange={(e) =>
+                  handleInput(
+                    regiao.key,
+                    Math.min(100, Math.max(0, Number(e.target.value)))
+                  )
+                }
+                min={0}
+                max={100}
+              />
+              <span className="text-sm text-gray-600">%</span>
             </div>
           ))}
-
           <div className="pt-4 text-green-800 font-bold">
             Área Total Acometida: {total}%
           </div>

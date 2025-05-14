@@ -1,17 +1,39 @@
-// ✅ src/app/paciente/[id]/page.tsx
 "use client";
 
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import type { Paciente } from "@/components/FormularioPaciente";
-import QuestionarioHanseniase from "@/components/QuestionarioHanseniase";
-import MapaCorporal from "@/components/MapaCorporal";
-import FotosTratamento from "@/components/FotosTratamento";
-import Particularidade from "@/components/Particularidade";
-import Recao from "@/components/recao";
-import Sessao from "@/components/Sessao";
 
+// Tipos usados no tratamento:
+interface MapaCorporalData {
+  [regiao: string]: number;
+}
+
+interface Exame {
+  exameTipo: string;
+  nomeExame: string;
+  resultadoNumerico?: string;
+  resultadoBoolean?: boolean;
+  resultadoOutro?: string;
+  dataExame: string;
+  laboratorio: string;
+  observacao?: string;
+}
+
+interface ParticularidadeData {
+  [caracteristica: string]: boolean | string;
+}
+
+interface Tratamento {
+  id: number;
+  data: string;
+  mapa: MapaCorporalData;
+  exames: Exame[];
+  particularidades: ParticularidadeData;
+}
+
+// Mock de pacientes
 const pacientesMock: (Paciente & { nome: string })[] = [
   {
     id: 1,
@@ -42,24 +64,26 @@ const pacientesMock: (Paciente & { nome: string })[] = [
 export default function VisualizarPaciente() {
   const { id } = useParams();
   const [paciente, setPaciente] = useState<(Paciente & { nome: string }) | null>(null);
+  const [tratamentos, setTratamentos] = useState<Tratamento[]>([]);
 
   useEffect(() => {
     const encontrado = pacientesMock.find((p) => String(p.id) === String(id));
-    if (encontrado) {
-      setPaciente(encontrado);
-    }
+    if (encontrado) setPaciente(encontrado);
+
+    const armazenados = localStorage.getItem(`tratamentos_${id}`);
+    if (armazenados) setTratamentos(JSON.parse(armazenados));
   }, [id]);
 
   return (
-    <main className="min-h-screen px-4 py-8 bg-gray-50 flex flex-col items-center justify-start">
-      <div className="w-full max-w-5xl space-y-10 bg-white p-6 rounded-xl shadow">
+    <main className="min-h-screen px-4 py-8 bg-gray-50 flex flex-col items-center">
+      <div className="w-full max-w-5xl bg-white p-6 rounded-xl shadow space-y-10">
         <h1 className="text-2xl font-bold text-green-700 text-center">
           Detalhes do Paciente
         </h1>
 
         {paciente ? (
-          <div className="space-y-8 text-gray-800">
-            <div>
+          <>
+            <div className="space-y-2 text-gray-800">
               <p><strong>Nome:</strong> {paciente.nome}</p>
               <p><strong>Prontuário:</strong> {paciente.prontuario}</p>
               <p><strong>Sexo:</strong> {paciente.sexo}</p>
@@ -71,41 +95,37 @@ export default function VisualizarPaciente() {
               <p><strong>Fototipo:</strong> {paciente.fototipo}</p>
             </div>
 
-            <div>
-              <h2 className="text-xl font-semibold text-green-700 mb-2">Fotos do Tratamento</h2>
-              <FotosTratamento />
-            </div>
+            <div className="pt-6 border-t">
+              <h2 className="text-xl font-semibold text-green-700 mb-2">Tratamentos</h2>
 
-            <div>
-              <h2 className="text-xl font-semibold text-green-700 mb-2">Mapa Corporal</h2>
-              <MapaCorporal />
-            </div>
+              <Link
+                href={`/paciente/${id}/tratamento`}
+                className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition text-sm inline-block"
+              >
+                ➕ Criar Novo Tratamento
+              </Link>
 
-            <div>
-              <h2 className="text-xl font-semibold text-green-700 mb-2">Particularidades</h2>
-              <Particularidade />
+              {tratamentos.length > 0 ? (
+                <ul className="mt-4 space-y-2">
+                  {tratamentos.map((t) => (
+                    <li key={t.id} className="bg-gray-100 p-3 rounded shadow text-sm">
+                      <p className="font-medium text-green-700">Tratamento #{t.id} - {t.data}</p>
+                      <p className="text-gray-600">→ Mapa preenchido: {Object.keys(t.mapa).length > 0 ? "Sim" : "Não"}</p>
+                      <p className="text-gray-600">→ Exames: {t.exames.length}</p>
+                      <p className="text-gray-600">→ Particularidades: {Object.keys(t.particularidades).length}</p>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="mt-2 text-sm text-gray-500">Nenhum tratamento registrado ainda.</p>
+              )}
             </div>
-
-            <div>
-              <h2 className="text-xl font-semibold text-green-700 mb-2">Questionário Hanseníase</h2>
-              <QuestionarioHanseniase />
-            </div>
-
-            <div>
-              <h2 className="text-xl font-semibold text-green-700 mb-2">Reações</h2>
-              <Recao />
-            </div>
-
-            <div>
-              <h2 className="text-xl font-semibold text-green-700 mb-2">Sessões de Tratamento</h2>
-              <Sessao />
-            </div>
-          </div>
+          </>
         ) : (
           <p className="text-center text-gray-500">Paciente não encontrado.</p>
         )}
 
-        <div className="text-center pt-4">
+        <div className="text-center pt-6">
           <Link
             href="/buscar"
             className="inline-block mt-4 text-green-700 hover:underline"

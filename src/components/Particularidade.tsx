@@ -1,10 +1,29 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { CheckCircle } from "lucide-react";
 
-export default function Particularidade() {
-  const [form, setForm] = useState({
+export type ParticularidadeData = {
+  usoDegrau: boolean;
+  descricaoUsoDegrau: string;
+  usoOculos: boolean;
+  descricaoUsoOculos: string;
+  exporFace: boolean;
+  descricaoExporFace: string;
+  protecaoGenital: boolean;
+  descricaoProtecaoGenital: string;
+  marcarPosicaoCabine: boolean;
+  descricaoPosicaoCabine: string;
+  marcarOutros: boolean;
+  descricaoOutros: string;
+};
+
+type Props = {
+  onChange?: (data: ParticularidadeData) => void;
+};
+
+export default function Particularidade({ onChange }: Props) {
+  const [form, setForm] = useState<ParticularidadeData>({
     usoDegrau: false,
     descricaoUsoDegrau: "",
     usoOculos: false,
@@ -18,6 +37,10 @@ export default function Particularidade() {
     marcarOutros: false,
     descricaoOutros: "",
   });
+
+  useEffect(() => {
+    onChange?.(form);
+  }, [form, onChange]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -80,22 +103,22 @@ export default function Particularidade() {
             <input
               type="checkbox"
               name={item.name}
-              checked={form[item.name as keyof typeof form] as boolean}
+              checked={form[item.name as keyof ParticularidadeData] as boolean}
               onChange={handleChange}
               className="accent-green-600"
             />
             <span className="text-green-700 font-medium flex items-center gap-1">
               {item.label}
-              {form[item.name as keyof typeof form] && (
+              {form[item.name as keyof ParticularidadeData] && (
                 <CheckCircle className="text-green-600 w-4 h-4" />
               )}
             </span>
           </label>
-          {form[item.name as keyof typeof form] && (
+          {form[item.name as keyof ParticularidadeData] && (
             <input
               type="text"
               name={item.desc}
-              value={form[item.desc as keyof typeof form] as string}
+              value={form[item.desc as keyof ParticularidadeData] as string}
               onChange={handleChange}
               placeholder={item.placeholder}
               className="mt-2 w-full border border-green-300 rounded-lg p-3 placeholder:text-gray-400 text-green-700 bg-white"
