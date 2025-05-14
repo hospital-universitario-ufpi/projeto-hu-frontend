@@ -83,7 +83,7 @@ export default function CriarTratamentoPage() {
   };
 
   return (
-    <main className="min-h-screen px-4 py-8 bg-gray-50 flex flex-col items-center">
+    <main className="min-h-screen px-4 py-8 bg-green-50 flex flex-col items-center">
       <div className="w-full max-w-5xl bg-white p-6 rounded-xl shadow space-y-10">
         <h1 className="text-2xl font-bold text-green-700 text-center">
           Criar Novo Tratamento para Paciente #{id}

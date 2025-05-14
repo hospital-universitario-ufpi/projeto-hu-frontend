@@ -70,7 +70,7 @@ export default function SecaoExames({ onChange }: Props) {
             observacao: "Exame de teste"
           })
         }
-        className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition text-sm"
+        className="bg-green-600 text px-4 py-2 rounded hover:bg-green-700 transition text-sm"
       >
         + Adicionar Exame de Teste
       </button>
@@ -78,7 +78,7 @@ export default function SecaoExames({ onChange }: Props) {
       {exames.map((exame, index) => (
         <div
           key={index}
-          className="border border-green-300 rounded-lg p-4 bg-gray-50"
+          className="border border-green-300 rounded-lg p-4 bg-gray-50 text-green-700"
         >
           <p><strong>Nome do Exame:</strong> {exame.nomeExame}</p>
           <p><strong>Data:</strong> {exame.dataExame}</p>

@@ -119,7 +119,7 @@ export default function VisualizarPaciente() {
                               <h4 className="font-semibold text-green-700">Mapa Corporal:</h4>
                               <ul className="list-disc list-inside">
                                 {Object.entries(t.mapa).map(([regiao, valor]) => (
-                                  <li key={regiao}>{regiao}: {valor}%</li>
+                                  <li className="text-green-600" key={regiao}>{regiao}: {valor}%</li>
                                 ))}
                               </ul>
                             </div>
@@ -127,7 +127,7 @@ export default function VisualizarPaciente() {
                               <h4 className="font-semibold text-green-700">Exames:</h4>
                               <ul className="list-disc list-inside">
                                 {t.exames.map((exame, i) => (
-                                  <li key={i}>
+                                  <li className="text-green-600" key={i}>
                                     {exame.nomeExame} ({exame.exameTipo}) -{" "}
                                     {exame.exameTipo === "NUMERICO"
                                       ? exame.resultadoNumerico
@@ -142,7 +142,7 @@ export default function VisualizarPaciente() {
                               <h4 className="font-semibold text-green-700">Particularidades:</h4>
                               <ul className="list-disc list-inside">
                                 {Object.entries(t.particularidades).map(([chave, valor]) => (
-                                  <li key={chave}>
+                                  <li className="text-green-600" key={chave}>
                                     {chave}: {typeof valor === "boolean" ? (valor ? "Sim" : "Não") : valor}
                                   </li>
                                 ))}
