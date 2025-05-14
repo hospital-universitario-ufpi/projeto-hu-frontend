@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from "react";
 
-// ✅ Aqui está a declaração correta e única do tipo
 export type Paciente = {
   id?: number;
   prontuario: string;
@@ -68,113 +67,114 @@ export default function FormularioPaciente({ onSalvar, dadosIniciais }: Props) {
             : "Cadastro de Paciente"}
         </h2>
 
-        {finalizado && (
-          <button
-            onClick={() => setModoEdicao((prev) => !prev)}
-            className="absolute -bottom-8 right-6 text-sm text-green-700 underline hover:text-green-900"
-          >
-            {modoEdicao ? "Cancelar" : "Editar Cadastro Paciente"}
-          </button>
-        )}
+        {finalizado && !modoEdicao ? (
+          <div className="bg-green-100 p-6 rounded-xl space-y-4 text-green-800 shadow">
+            <p><strong>Prontuário:</strong> {formData.prontuario}</p>
+            <p><strong>CPF:</strong> {formData.cpf}</p>
+            <p><strong>Sexo:</strong> {formData.sexo}</p>
+            <p><strong>Data de Nascimento:</strong> {formData.dataDeNascimento}</p>
+            <p><strong>Telefone do Paciente:</strong> {formData.telefonePaciente}</p>
+            <p><strong>Médico que Indicou:</strong> {formData.medicoIndicacao}</p>
+            <p><strong>Telefone do Médico:</strong> {formData.telefoneMedicoIndicacao}</p>
+            <p><strong>Fototipo:</strong> {formData.fototipo}</p>
 
-        <form onSubmit={handleSubmit} className="space-y-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {[
-              {
+            <div className="text-right">
+              <button
+                onClick={() => setModoEdicao(true)}
+                className="text-sm text-green-700 underline hover:text-green-900"
+              >
+                Editar Cadastro Paciente
+              </button>
+            </div>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} className="space-y-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {[{
                 label: "Prontuário",
                 name: "prontuario",
                 placeholder: "Número do prontuário",
-                type: "text",
-              },
-              {
+                type: "text"
+              }, {
                 label: "CPF",
                 name: "cpf",
                 placeholder: "000.000.000-00",
-                type: "text",
-              },
-              {
+                type: "text"
+              }, {
                 label: "Data de Nascimento",
                 name: "dataDeNascimento",
-                type: "date",
-              },
-              {
+                type: "date"
+              }, {
                 label: "Telefone do Paciente",
                 name: "telefonePaciente",
                 placeholder: "(00) 00000-0000",
-                type: "tel",
-              },
-              {
+                type: "tel"
+              }, {
                 label: "Médico que Indicou",
                 name: "medicoIndicacao",
                 placeholder: "Nome do médico",
-                type: "text",
-              },
-              {
+                type: "text"
+              }, {
                 label: "Telefone do Médico",
                 name: "telefoneMedicoIndicacao",
                 placeholder: "(00) 00000-0000",
-                type: "tel",
-              },
-            ].map(({ label, name, placeholder, type }) => (
-              <div key={name}>
+                type: "tel"
+              }].map(({ label, name, placeholder, type }) => (
+                <div key={name}>
+                  <label className="block text-green-700 font-medium mb-2">
+                    {label}
+                  </label>
+                  <input
+                    type={type}
+                    name={name}
+                    value={formData[name as keyof Paciente] as string}
+                    onChange={handleChange}
+                    className="w-full p-3 rounded-lg border border-green-300 focus:outline-none focus:ring-2 focus:ring-green-400 shadow-sm text-gray-700"
+                    placeholder={placeholder}
+                    required
+                  />
+                </div>
+              ))}
+
+              <div>
                 <label className="block text-green-700 font-medium mb-2">
-                  {label}
+                  Sexo
                 </label>
-                <input
-                  type={type}
-                  name={name}
-                  value={formData[name as keyof Paciente] as string}
+                <select
+                  name="sexo"
+                  value={formData.sexo}
                   onChange={handleChange}
-                  disabled={finalizado && !modoEdicao}
-                  className="w-full p-3 rounded-lg border border-green-300 focus:outline-none focus:ring-2 focus:ring-green-400 shadow-sm text-gray-700"
-                  placeholder={placeholder}
+                  className="w-full p-3 pr-8 rounded-lg border border-green-300 focus:outline-none focus:ring-2 focus:ring-green-400 text-green-700"
                   required
-                />
+                >
+                  <option value="">Selecione</option>
+                  <option value="MASCULINO">Masculino</option>
+                  <option value="FEMININO">Feminino</option>
+                </select>
               </div>
-            ))}
 
-            <div>
-              <label className="block text-green-700 font-medium mb-2">
-                Sexo
-              </label>
-              <select
-                name="sexo"
-                value={formData.sexo}
-                onChange={handleChange}
-                disabled={finalizado && !modoEdicao}
-                className="w-full p-3 pr-8 rounded-lg border border-green-300 focus:outline-none focus:ring-2 focus:ring-green-400 text-green-700"
-                required
-              >
-                <option value="">Selecione</option>
-                <option value="MASCULINO">Masculino</option>
-                <option value="FEMININO">Feminino</option>
-              </select>
+              <div>
+                <label className="block text-green-700 font-medium mb-2">
+                  Fototipo
+                </label>
+                <select
+                  name="fototipo"
+                  value={formData.fototipo}
+                  onChange={handleChange}
+                  className="w-full p-3 pr-8 rounded-lg border border-green-300 focus:outline-none focus:ring-2 focus:ring-green-400 text-green-700"
+                  required
+                >
+                  <option value="">Selecione</option>
+                  <option value="I">I - Pele Branca</option>
+                  <option value="II">II - Pele Clara</option>
+                  <option value="III">III - Morena Clara</option>
+                  <option value="IV">IV - Morena Escura</option>
+                  <option value="V">V - Negra</option>
+                  <option value="VI">VI - Negra Profunda</option>
+                </select>
+              </div>
             </div>
 
-            <div>
-              <label className="block text-green-700 font-medium mb-2">
-                Fototipo
-              </label>
-              <select
-                name="fototipo"
-                value={formData.fototipo}
-                onChange={handleChange}
-                disabled={finalizado && !modoEdicao}
-                className="w-full p-3 pr-8 rounded-lg border border-green-300 focus:outline-none focus:ring-2 focus:ring-green-400 text-green-700"
-                required
-              >
-                <option value="">Selecione</option>
-                <option value="I">I - Pele Branca</option>
-                <option value="II">II - Pele Clara</option>
-                <option value="III">III - Morena Clara</option>
-                <option value="IV">IV - Morena Escura</option>
-                <option value="V">V - Negra</option>
-                <option value="VI">VI - Negra Profunda</option>
-              </select>
-            </div>
-          </div>
-
-          {(modoEdicao || !finalizado) && (
             <div className="flex justify-center mt-16">
               <button
                 type="submit"
@@ -185,8 +185,8 @@ export default function FormularioPaciente({ onSalvar, dadosIniciais }: Props) {
                   : "Finalizar Cadastro"}
               </button>
             </div>
-          )}
-        </form>
+          </form>
+        )}
       </div>
     </section>
   );

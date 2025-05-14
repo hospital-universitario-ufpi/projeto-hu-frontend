@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import type { Paciente } from "@/components/FormularioPaciente";
 
-// Tipos usados no tratamento:
 interface MapaCorporalData {
   [regiao: string]: number;
 }
@@ -33,7 +32,6 @@ interface Tratamento {
   particularidades: ParticularidadeData;
 }
 
-// Mock de pacientes
 const pacientesMock: (Paciente & { nome: string })[] = [
   {
     id: 1,
@@ -65,6 +63,7 @@ export default function VisualizarPaciente() {
   const { id } = useParams();
   const [paciente, setPaciente] = useState<(Paciente & { nome: string }) | null>(null);
   const [tratamentos, setTratamentos] = useState<Tratamento[]>([]);
+  const [tratamentoExpandido, setTratamentoExpandido] = useState<number | null>(null);
 
   useEffect(() => {
     const encontrado = pacientesMock.find((p) => String(p.id) === String(id));
@@ -107,14 +106,57 @@ export default function VisualizarPaciente() {
 
               {tratamentos.length > 0 ? (
                 <ul className="mt-4 space-y-2">
-                  {tratamentos.map((t) => (
-                    <li key={t.id} className="bg-gray-100 p-3 rounded shadow text-sm">
-                      <p className="font-medium text-green-700">Tratamento #{t.id} - {t.data}</p>
-                      <p className="text-gray-600">→ Mapa preenchido: {Object.keys(t.mapa).length > 0 ? "Sim" : "Não"}</p>
-                      <p className="text-gray-600">→ Exames: {t.exames.length}</p>
-                      <p className="text-gray-600">→ Particularidades: {Object.keys(t.particularidades).length}</p>
-                    </li>
-                  ))}
+                  {tratamentos.map((t) => {
+                    const estaAberto = tratamentoExpandido === t.id;
+                    return (
+                      <li key={t.id} className="bg-gray-100 p-4 rounded-lg shadow space-y-2">
+                        <p className="font-semibold text-green-800">
+                          Tratamento #{t.id} - {t.data}
+                        </p>
+                        <p>→ Mapa preenchido: {Object.keys(t.mapa).length > 0 ? "Sim" : "Não"}</p>
+                        <p>→ Exames: {t.exames.length}</p>
+                        <p>→ Particularidades: {Object.keys(t.particularidades).length}</p>
+
+                        <button
+                          onClick={() => setTratamentoExpandido(estaAberto ? null : t.id)}
+                          className="text-sm text-green-600 underline"
+                        >
+                          {estaAberto ? "Ocultar Detalhes" : "Visualizar Detalhes"}
+                        </button>
+
+                        {estaAberto && (
+                          <div className="bg-white border border-green-300 rounded-lg p-4 mt-2 space-y-3 text-sm">
+                            <div>
+                              <h4 className="font-semibold text-green-700">Mapa Corporal:</h4>
+                              <ul className="list-disc list-inside">
+                                {Object.entries(t.mapa).map(([regiao, valor]) => (
+                                  <li key={regiao}>{regiao}: {valor}%</li>
+                                ))}
+                              </ul>
+                            </div>
+                            <div>
+                              <h4 className="font-semibold text-green-700">Exames:</h4>
+                              <ul className="list-disc list-inside">
+                                {t.exames.map((exame, i) => (
+                                  <li key={i}>
+                                    {exame.nomeExame} ({exame.exameTipo}) - {exame.resultadoNumerico || exame.resultadoBoolean?.toString() || exame.resultadoOutro}
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                            <div>
+                              <h4 className="font-semibold text-green-700">Particularidades:</h4>
+                              <ul className="list-disc list-inside">
+                                {Object.entries(t.particularidades).map(([chave, valor]) => (
+                                  <li key={chave}>{chave}: {valor.toString()}</li>
+                                ))}
+                              </ul>
+                            </div>
+                          </div>
+                        )}
+                      </li>
+                    );
+                  })}
                 </ul>
               ) : (
                 <p className="mt-2 text-sm text-gray-500">Nenhum tratamento registrado ainda.</p>
