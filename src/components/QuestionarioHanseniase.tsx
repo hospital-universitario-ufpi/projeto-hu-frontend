@@ -25,7 +25,7 @@ export default function SecaoExames() {
   ) => {
     const novas = [...exames];
     novas[index][field] = value as never;
-    setExames(novas);
+    setExames(novas); 
   };
 
   const salvarExame = (index: number) => {

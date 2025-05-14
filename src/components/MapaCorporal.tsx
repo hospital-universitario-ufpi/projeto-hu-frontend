@@ -14,7 +14,11 @@ const regioes = [
   { nome: "Genitália", key: "genitalia", top: "56%", left: "25%" },
 ];
 
-export default function SecaoExames() {
+type Props = {
+  modoVisualizacao?: boolean;
+};
+
+export default function MapaCorporal({ modoVisualizacao = false }: Props) {
   const [porcentagens, setPorcentagens] = useState({
     cabecaPescoco: 0,
     bracoDireito: 0,
@@ -38,7 +42,6 @@ export default function SecaoExames() {
         Área Corporal Acometida
       </h3>
       <div className="flex flex-col md:flex-row items-center justify-center gap-12">
-
         <div className="relative w-full md:w-[600px] h-[600px]">
           <Image
             src="/corpo.jpg"
@@ -80,20 +83,26 @@ export default function SecaoExames() {
               <label className="w-40 text-green-700 font-medium">
                 {regiao.nome}
               </label>
-              <input
-                type="number"
-                className="w-20 p-2 border border-green-300 rounded text-green-700"
-                value={porcentagens[regiao.key]}
-                onChange={(e) =>
-                  handleInput(
-                    regiao.key,
-                    Math.min(100, Math.max(0, Number(e.target.value)))
-                  )
-                }
-                min={0}
-                max={100}
-              />
-              <span className="text-sm text-gray-600">%</span>
+              {modoVisualizacao ? (
+                <span className="text-gray-800">{porcentagens[regiao.key]}%</span>
+              ) : (
+                <>
+                  <input
+                    type="number"
+                    className="w-20 p-2 border border-green-300 rounded text-green-700"
+                    value={porcentagens[regiao.key]}
+                    onChange={(e) =>
+                      handleInput(
+                        regiao.key,
+                        Math.min(100, Math.max(0, Number(e.target.value)))
+                      )
+                    }
+                    min={0}
+                    max={100}
+                  />
+                  <span className="text-sm text-gray-600">%</span>
+                </>
+              )}
             </div>
           ))}
 

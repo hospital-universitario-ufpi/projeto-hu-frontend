@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 
+// ✅ Aqui está a declaração correta e única do tipo
 export type Paciente = {
   id?: number;
   prontuario: string;
@@ -42,9 +43,7 @@ export default function FormularioPaciente({ onSalvar, dadosIniciais }: Props) {
   }, [dadosIniciais]);
 
   const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -80,7 +79,6 @@ export default function FormularioPaciente({ onSalvar, dadosIniciais }: Props) {
 
         <form onSubmit={handleSubmit} className="space-y-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* campos */}
             {[
               {
                 label: "Prontuário",
@@ -135,60 +133,48 @@ export default function FormularioPaciente({ onSalvar, dadosIniciais }: Props) {
               </div>
             ))}
 
-            {/* Sexo */}
             <div>
               <label className="block text-green-700 font-medium mb-2">
                 Sexo
               </label>
-              <div className="relative w-full">
-                <select
-                  name="sexo"
-                  value={formData.sexo}
-                  onChange={handleChange}
-                  disabled={finalizado && !modoEdicao}
-                  className="appearance-none w-full p-3 pr-8 rounded-lg border border-green-300 focus:outline-none focus:ring-2 focus:ring-green-400 text-green-700"
-                  required
-                >
-                  <option value="">Selecione</option>
-                  <option value="MASCULINO">Masculino</option>
-                  <option value="FEMININO">Feminino</option>
-                </select>
-                <div className="absolute inset-y-0 right-2 flex items-center pointer-events-none text-green-700 text-sm">
-                  ▼
-                </div>
-              </div>
+              <select
+                name="sexo"
+                value={formData.sexo}
+                onChange={handleChange}
+                disabled={finalizado && !modoEdicao}
+                className="w-full p-3 pr-8 rounded-lg border border-green-300 focus:outline-none focus:ring-2 focus:ring-green-400 text-green-700"
+                required
+              >
+                <option value="">Selecione</option>
+                <option value="MASCULINO">Masculino</option>
+                <option value="FEMININO">Feminino</option>
+              </select>
             </div>
 
-            {/* Fototipo */}
             <div>
               <label className="block text-green-700 font-medium mb-2">
                 Fototipo
               </label>
-              <div className="relative w-full">
-                <select
-                  name="fototipo"
-                  value={formData.fototipo}
-                  onChange={handleChange}
-                  disabled={finalizado && !modoEdicao}
-                  className="appearance-none w-full p-3 pr-8 rounded-lg border border-green-300 focus:outline-none focus:ring-2 focus:ring-green-400 text-green-700"
-                  required
-                >
-                  <option value="">Selecione</option>
-                  <option value="I">I - Pele Branca</option>
-                  <option value="II">II - Pele Clara</option>
-                  <option value="III">III - Morena Clara</option>
-                  <option value="IV">IV - Morena Escura</option>
-                  <option value="V">V - Negra</option>
-                  <option value="VI">VI - Negra Profunda</option>
-                </select>
-                <div className="absolute inset-y-0 right-2 flex items-center pointer-events-none text-green-700 text-sm">
-                  ▼
-                </div>
-              </div>
+              <select
+                name="fototipo"
+                value={formData.fototipo}
+                onChange={handleChange}
+                disabled={finalizado && !modoEdicao}
+                className="w-full p-3 pr-8 rounded-lg border border-green-300 focus:outline-none focus:ring-2 focus:ring-green-400 text-green-700"
+                required
+              >
+                <option value="">Selecione</option>
+                <option value="I">I - Pele Branca</option>
+                <option value="II">II - Pele Clara</option>
+                <option value="III">III - Morena Clara</option>
+                <option value="IV">IV - Morena Escura</option>
+                <option value="V">V - Negra</option>
+                <option value="VI">VI - Negra Profunda</option>
+              </select>
             </div>
           </div>
 
-          {!finalizado || modoEdicao ? (
+          {(modoEdicao || !finalizado) && (
             <div className="flex justify-center mt-16">
               <button
                 type="submit"
@@ -199,7 +185,7 @@ export default function FormularioPaciente({ onSalvar, dadosIniciais }: Props) {
                   : "Finalizar Cadastro"}
               </button>
             </div>
-          ) : null}
+          )}
         </form>
       </div>
     </section>
