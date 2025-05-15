@@ -9,6 +9,7 @@ export enum ExameTipo {
 }
 
 //usar dropdown
+
 export const ExameTipoOptions = [
     {value: ExameTipo.EXAME_ANATOMOPATOLOGICO, label: "Exame anatomopatológico"},
     {value: ExameTipo.IMUNO_HISTOQUIMICA, label: "Imuno-histoquímica"},
