@@ -199,6 +199,8 @@ export default function FormularioPaciente({ onSalvar, dadosIniciais }: Props) {
                     <option value="V">V - Negra</option>
                     <option value="VI">VI - Negra Profunda</option>
                   </select>
+
+                  
                 </div>
               </div>
             </div>

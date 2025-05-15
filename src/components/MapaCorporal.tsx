@@ -5,6 +5,7 @@ import Image from "next/image";
 
 type Props = {
   onChange?: (dados: { [regiao: string]: number }) => void;
+  initialData?: { [regiao: string]: number }; // <- ADICIONADO AQUI
 };
 
 const regioes = [
@@ -18,35 +19,35 @@ const regioes = [
   { nome: "Genitália", key: "genitalia", top: "56%", left: "25%" },
 ];
 
-export default function MapaCorporal({ onChange }: Props) {
-  const [porcentagens, setPorcentagens] = useState<{ [regiao: string]: number }>({
-    cabecaPescoco: 0,
-    bracoDireito: 0,
-    bracoEsquerdo: 0,
-    pernaDireita: 0,
-    pernaEsquerda: 0,
-    troncoAnterior: 0,
-    troncoPosterior: 0,
-    genitalia: 0,
-  });
+export default function MapaCorporal({ onChange, initialData }: Props) {
+  const [porcentagens, setPorcentagens] = useState<{ [regiao: string]: number }>(
+    initialData || {
+      cabecaPescoco: 0,
+      bracoDireito: 0,
+      bracoEsquerdo: 0,
+      pernaDireita: 0,
+      pernaEsquerda: 0,
+      troncoAnterior: 0,
+      troncoPosterior: 0,
+      genitalia: 0,
+    }
+  );
 
   const total = Object.values(porcentagens).reduce((acc, val) => acc + val, 0);
 
   useEffect(() => {
-    onChange?.(porcentagens); // dispara o estado inicial
+    onChange?.(porcentagens);
   }, []);
 
   const handleInput = (key: string, value: number) => {
     const novo = { ...porcentagens, [key]: value };
     setPorcentagens(novo);
-    onChange?.(novo); // dispara a cada mudança
+    onChange?.(novo);
   };
 
   return (
     <section className="space-y-6">
-      <h3 className="text-green-700 text-xl font-bold">
-        Área Corporal Acometida
-      </h3>
+      <h3 className="text-green-700 text-xl font-bold">Área Corporal Acometida</h3>
       <div className="flex flex-col md:flex-row items-center justify-center gap-12">
         <div className="relative w-full md:w-[600px] h-[600px]">
           <Image
@@ -63,9 +64,7 @@ export default function MapaCorporal({ onChange }: Props) {
               style={{
                 top: regiao.top,
                 left: regiao.left,
-                backgroundColor: `rgba(255, 0, 0, ${
-                  porcentagens[regiao.key] / 100
-                })`,
+                backgroundColor: `rgba(255, 0, 0, ${porcentagens[regiao.key] / 100})`,
                 border: "2px solid red",
                 transform: "translate(-50%, -50%)",
               }}
@@ -81,14 +80,10 @@ export default function MapaCorporal({ onChange }: Props) {
               <div
                 className="w-5 h-5 rounded-full"
                 style={{
-                  backgroundColor: `rgba(255, 0, 0, ${
-                    porcentagens[regiao.key] / 100
-                  })`,
+                  backgroundColor: `rgba(255, 0, 0, ${porcentagens[regiao.key] / 100})`,
                 }}
               ></div>
-              <label className="w-40 text-green-700 font-medium">
-                {regiao.nome}
-              </label>
+              <label className="w-40 text-green-700 font-medium">{regiao.nome}</label>
               <input
                 type="number"
                 className="w-20 p-2 border border-green-300 rounded text-green-700"

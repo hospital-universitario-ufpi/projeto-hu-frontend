@@ -63,8 +63,8 @@ export default function BuscarPaciente() {
                 </div>
                 <div className="flex gap-2">
                   <Link
-                    href={`/formulariopaciente?id=${paciente.id}`}
-                    className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition text-sm"
+                    href={`/paciente/${paciente.id}`}
+                    className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
                   >
                     Editar
                   </Link>

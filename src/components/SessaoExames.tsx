@@ -15,42 +15,43 @@ export type Exame = {
 
 type Props = {
   onChange?: (exames: Exame[]) => void;
+  initialData?: Exame[];
 };
 
-export default function SecaoExames({ onChange }: Props) {
-  const [exames, setExames] = useState<Exame[]>([
-    {
-      nomeExame: "Hemograma Completo",
-      exameTipo: "NUMERICO",
-      resultadoNumerico: "4.5",
-      dataExame: "2024-04-01",
-      laboratorio: "Lab Vida",
-      observacao: "Dentro dos parâmetros normais."
-    },
-    {
-      nomeExame: "Teste de sensibilidade",
-      exameTipo: "BOOLEANO",
-      resultadoBoolean: true,
-      dataExame: "2024-04-10",
-      laboratorio: "BioMais",
-      observacao: "Paciente respondeu positivamente."
-    },
-    {
-      nomeExame: "Análise de pele",
-      exameTipo: "OUTRO",
-      resultadoOutro: "Presença de manchas difusas nas costas",
-      dataExame: "2024-04-15",
-      laboratorio: "Clínica São Lucas",
-      observacao: "Sugerido acompanhamento."
-    }
-  ]);
+export default function SessaoExames({ onChange, initialData }: Props) {
+  const [exames, setExames] = useState<Exame[]>(
+    initialData || [
+      {
+        nomeExame: "Hemograma Completo",
+        exameTipo: "NUMERICO",
+        resultadoNumerico: "4.5",
+        dataExame: "2024-04-01",
+        laboratorio: "Lab Vida",
+        observacao: "Dentro dos parâmetros normais."
+      },
+      {
+        nomeExame: "Teste de sensibilidade",
+        exameTipo: "BOOLEANO",
+        resultadoBoolean: true,
+        dataExame: "2024-04-10",
+        laboratorio: "BioMais",
+        observacao: "Paciente respondeu positivamente."
+      },
+      {
+        nomeExame: "Análise de pele",
+        exameTipo: "OUTRO",
+        resultadoOutro: "Presença de manchas difusas nas costas",
+        dataExame: "2024-04-15",
+        laboratorio: "Clínica São Lucas",
+        observacao: "Sugerido acompanhamento."
+      }
+    ]
+  );
 
-  // Dispara onChange sempre que os exames forem atualizados
   useEffect(() => {
     onChange?.(exames);
   }, [exames, onChange]);
 
-  // Adiciona um exame de exemplo (pode ser adaptado depois)
   const adicionarExame = (novo: Exame) => {
     setExames((prev) => [...prev, novo]);
   };
@@ -70,7 +71,7 @@ export default function SecaoExames({ onChange }: Props) {
             observacao: "Exame de teste"
           })
         }
-        className="bg-green-600 text px-4 py-2 rounded hover:bg-green-700 transition text-sm"
+        className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition text-sm"
       >
         + Adicionar Exame de Teste
       </button>

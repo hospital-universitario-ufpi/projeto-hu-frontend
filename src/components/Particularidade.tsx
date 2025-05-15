@@ -20,23 +20,26 @@ export type ParticularidadeData = {
 
 type Props = {
   onChange?: (data: ParticularidadeData) => void;
+  initialData?: ParticularidadeData;
 };
 
-export default function Particularidade({ onChange }: Props) {
-  const [form, setForm] = useState<ParticularidadeData>({
-    usoDegrau: false,
-    descricaoUsoDegrau: "",
-    usoOculos: false,
-    descricaoUsoOculos: "",
-    exporFace: false,
-    descricaoExporFace: "",
-    protecaoGenital: false,
-    descricaoProtecaoGenital: "",
-    marcarPosicaoCabine: false,
-    descricaoPosicaoCabine: "",
-    marcarOutros: false,
-    descricaoOutros: "",
-  });
+export default function Particularidade({ onChange, initialData }: Props) {
+  const [form, setForm] = useState<ParticularidadeData>(
+    initialData || {
+      usoDegrau: false,
+      descricaoUsoDegrau: "",
+      usoOculos: false,
+      descricaoUsoOculos: "",
+      exporFace: false,
+      descricaoExporFace: "",
+      protecaoGenital: false,
+      descricaoProtecaoGenital: "",
+      marcarPosicaoCabine: false,
+      descricaoPosicaoCabine: "",
+      marcarOutros: false,
+      descricaoOutros: "",
+    }
+  );
 
   useEffect(() => {
     onChange?.(form);

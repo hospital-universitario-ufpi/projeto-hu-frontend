@@ -95,7 +95,7 @@ export default function SecaoExames() {
           ) : null}
 
           {(!exame.salvo || exame.expandido) && (
-            <div className="mt-4 space-y-4">
+            <div className="mt-4 space-y-4 ">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="text-sm font-medium text-green-700">Tipo</label>
@@ -200,7 +200,7 @@ export default function SecaoExames() {
         </div>
       ))}
 
-      <div className="pt-2">
+      <div className="pt-2 text-green-700">
         <button
           type="button"
           onClick={adicionarExame}
