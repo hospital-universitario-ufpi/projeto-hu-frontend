@@ -1,25 +1,24 @@
+// 1. src/app/paciente/[id]/tratamento/page.tsx
+
+// Função: Criar um novo tratamento para o paciente de id.
+
+// Resumo do comportamento:
+// 	•	Cria um novo id para o tratamento com base no tamanho atual da lista.
+// 	•	Inicializa tudo vazio.
+// 	•	Salva no localStorage (ex: tratamentos_5).
+// 	•	Redireciona para /paciente/5.
+
 "use client";
 
 import { useParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import MapaCorporal from "@/components/MapaCorporal";
-import SessaoExames from "@/components/SessaoExames";
+import SessaoExames, { Exame } from "@/components/SessaoExames";
 import Particularidade, { ParticularidadeData } from "@/components/Particularidade";
 
 interface MapaCorporalData {
   [regiao: string]: number;
-}
-
-interface Exame {
-  exameTipo: string;
-  nomeExame: string;
-  resultadoNumerico?: string;
-  resultadoBoolean?: boolean;
-  resultadoOutro?: string;
-  dataExame: string;
-  laboratorio: string;
-  observacao?: string;
 }
 
 interface Tratamento {
@@ -37,64 +36,40 @@ export default function CriarTratamentoPage() {
   const [mapa, setMapa] = useState<MapaCorporalData>({});
   const [exames, setExames] = useState<Exame[]>([]);
   const [particularidades, setParticularidades] = useState<ParticularidadeData>({
-  usoDegrau: false,
-  descricaoUsoDegrau: "",
-  usoOculos: false,
-  descricaoUsoOculos: "",
-  exporFace: false,
-  descricaoExporFace: "",
-  protecaoGenital: false,
-  descricaoProtecaoGenital: "",
-  marcarPosicaoCabine: false,
-  descricaoPosicaoCabine: "",
-  marcarOutros: false,
-  descricaoOutros: "",
-} as ParticularidadeData);
+    usoDegrau: false,
+    descricaoUsoDegrau: "",
+    usoOculos: false,
+    descricaoUsoOculos: "",
+    exporFace: false,
+    descricaoExporFace: "",
+    protecaoGenital: false,
+    descricaoProtecaoGenital: "",
+    marcarPosicaoCabine: false,
+    descricaoPosicaoCabine: "",
+    marcarOutros: false,
+    descricaoOutros: "",
+  });
 
-  const [tratamentoSalvo, setTratamentoSalvo] = useState(false);
   const [tratamentos, setTratamentos] = useState<Tratamento[]>([]);
-  const [modoEdicao, setModoEdicao] = useState(false);
-  const [tratamentoIndex, setTratamentoIndex] = useState<number | null>(null);
+  const [tratamentoSalvo, setTratamentoSalvo] = useState(false);
 
   useEffect(() => {
     const armazenados = localStorage.getItem(`tratamentos_${id}`);
     if (armazenados) {
-      const lista = JSON.parse(armazenados);
-      setTratamentos(lista);
-
-      const index = sessionStorage.getItem("editar_tratamento_index");
-      if (index !== null) {
-        const t = lista[parseInt(index, 10)];
-        if (t) {
-          setMapa(t.mapa);
-          setExames(t.exames);
-          setParticularidades(t.particularidades);
-          setModoEdicao(true);
-          setTratamentoIndex(parseInt(index, 10));
-          sessionStorage.removeItem("editar_tratamento_index");
-        }
-      }
+      setTratamentos(JSON.parse(armazenados));
     }
   }, [id]);
 
   const salvarTratamento = () => {
     const novoTratamento: Tratamento = {
-      id: modoEdicao && tratamentoIndex !== null ? tratamentoIndex + 1 : tratamentos.length + 1,
+      id: tratamentos.length + 1,
       data: new Date().toLocaleDateString("pt-BR"),
       mapa,
       exames,
       particularidades,
     };
 
-    let atualizados;
-    if (modoEdicao && tratamentoIndex !== null) {
-      atualizados = [...tratamentos];
-      atualizados[tratamentoIndex] = novoTratamento;
-    } else {
-      atualizados = [...tratamentos, novoTratamento];
-    }
-
-    setTratamentos(atualizados);
+    const atualizados = [...tratamentos, novoTratamento];
     localStorage.setItem(`tratamentos_${id}`, JSON.stringify(atualizados));
     setTratamentoSalvo(true);
 
@@ -107,19 +82,19 @@ export default function CriarTratamentoPage() {
     <main className="min-h-screen px-4 py-8 bg-gray-50 flex flex-col items-center">
       <div className="w-full max-w-5xl bg-white p-6 rounded-xl shadow space-y-10">
         <h1 className="text-2xl font-bold text-green-700 text-center">
-          {modoEdicao ? "Editar Tratamento" : `Criar Novo Tratamento para Paciente #${id}`}
+          Criar Novo Tratamento para Paciente #{id}
         </h1>
 
         <MapaCorporal onChange={setMapa} initialData={mapa} />
         <SessaoExames onChange={setExames} initialData={exames} />
         <Particularidade onChange={setParticularidades} initialData={particularidades} />
 
-        <div className="flex justify-center pt-4 ">
+        <div className="flex justify-center pt-4">
           <button
             onClick={salvarTratamento}
             className="bg-green-600 text-white px-6 py-3 rounded-full hover:bg-green-700 transition"
           >
-            💾 {modoEdicao ? "Salvar Alterações" : "Salvar Tratamento"}
+            💾 Salvar Tratamento
           </button>
         </div>
 

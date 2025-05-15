@@ -3,23 +3,11 @@
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import MapaCorporal from "@/components/MapaCorporal";
-import SessaoExames from "@/components/SessaoExames";
-import Particularidade from "@/components/Particularidade";
-import type { ParticularidadeData } from "@/components/Particularidade";
+import SessaoExames, { Exame } from "@/components/SessaoExames";
+import Particularidade, { ParticularidadeData } from "@/components/Particularidade";
 
 interface MapaCorporalData {
   [regiao: string]: number;
-}
-
-interface Exame {
-  exameTipo: string;
-  nomeExame: string;
-  resultadoNumerico?: string;
-  resultadoBoolean?: boolean;
-  resultadoOutro?: string;
-  dataExame: string;
-  laboratorio: string;
-  observacao?: string;
 }
 
 interface Tratamento {
@@ -59,11 +47,14 @@ export default function EditarTratamentoPage() {
       const lista: Tratamento[] = JSON.parse(armazenados);
       setTratamentos(lista);
 
-      const tratamentoExistente = lista.find(t => String(t.id) === String(idTratamento));
-      if (tratamentoExistente) {
-        setMapa(tratamentoExistente.mapa);
-        setExames(tratamentoExistente.exames);
-        setParticularidades(tratamentoExistente.particularidades);
+      const tratamento = lista.find(t => String(t.id) === String(idTratamento));
+      if (tratamento) {
+        setMapa(tratamento.mapa);
+        setExames(tratamento.exames.map(exame => ({
+          ...exame,
+          exameTipo: exame.exameTipo as "NUMERICO" | "BOOLEANO" | "OUTRO",
+        })));
+        setParticularidades(tratamento.particularidades);
       }
     }
   }, [id, idTratamento]);
