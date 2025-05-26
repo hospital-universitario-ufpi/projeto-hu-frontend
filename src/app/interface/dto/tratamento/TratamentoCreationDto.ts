@@ -2,7 +2,7 @@ import { DiaSemana } from "../../enums/DiaSemana";
 import { RespostaTratamento } from "../../enums/RespostaTratamento";
 
 export type TratamentoCreationDto = {
-    pacienteId: string; // ID do paciente vinculado ao tratamento. Ex: "1"
+    pacienteId: number; // ID do paciente vinculado ao tratamento. Ex: "1"
 
     nomeTratamento: string; // Nome ou descrição breve do tratamento. Ex: "Fototerapia UVB NB"
 
