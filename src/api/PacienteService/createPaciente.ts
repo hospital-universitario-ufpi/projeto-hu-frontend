@@ -1,3 +1,4 @@
+
 import api from "..";
 import { PacienteCreationDto } from "../../app/interface/dto/paciente/PacienteCreationDto";
 import { PacienteDto } from "../../app/interface/dto/paciente/PacienteDto";
