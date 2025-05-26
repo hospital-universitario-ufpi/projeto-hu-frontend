@@ -1,34 +1,32 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { PacienteCreationDto } from "@/app/interface/dto/paciente/PacienteCreationDto";
+import { PacienteDto } from "@/app/interface/dto/paciente/PacienteDto";
+import { PacienteSexoOptions } from "@/app/interface/enums/PacienteSexo";
+import { FototipoOptions } from "@/app/interface/enums/Fototipo";
+import { createPaciente } from "@/api/PacienteService/createPaciente";
 
-export type Paciente = {
-  id?: number;
-  prontuario: string;
-  sexo: "MASCULINO" | "FEMININO";
-  cpf: string;
-  dataDeNascimento: string;
-  medicoIndicacao: string;
-  telefoneMedicoIndicacao: string;
-  telefonePaciente: string;
-  fototipo: "I" | "II" | "III" | "IV" | "V" | "VI";
-};
 
 type Props = {
-  onSalvar: (dados: Paciente) => void;
-  dadosIniciais?: Paciente | null;
+  onSalvar?: (dados: PacienteDto) => void;
+  dadosIniciais?: PacienteCreationDto | null;
 };
 
 export default function FormularioPaciente({ onSalvar, dadosIniciais }: Props) {
-  const [formData, setFormData] = useState<Paciente>({
+  const router = useRouter();
+
+  const [formData, setFormData] = useState<PacienteCreationDto>({
+    nome: "",
     prontuario: "",
-    sexo: "MASCULINO",
-    cpf: "",
+    sexo: null,
     dataDeNascimento: "",
     medicoIndicacao: "",
     telefoneMedicoIndicacao: "",
     telefonePaciente: "",
-    fototipo: "I",
+    fototipo: null,
+    resumoTratamentosAnteriores: "",
   });
 
   const [finalizado, setFinalizado] = useState(false);
@@ -42,7 +40,7 @@ export default function FormularioPaciente({ onSalvar, dadosIniciais }: Props) {
   }, [dadosIniciais]);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -51,20 +49,15 @@ export default function FormularioPaciente({ onSalvar, dadosIniciais }: Props) {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    const pacienteComId = {
-      ...formData,
-      id: formData.id ?? Date.now(),
-    };
-
-    onSalvar(pacienteComId);
-    localStorage.setItem(`paciente_${pacienteComId.id}`, JSON.stringify(pacienteComId));
-
-    setFormData(pacienteComId);
-    setFinalizado(true);
-    setModoEdicao(false);
+    try {
+      const pacienteSalvo = await createPaciente(formData);
+      if (onSalvar) onSalvar(pacienteSalvo);
+      router.push(`/paciente/${pacienteSalvo.id}`);
+    } catch (err) {
+      console.error("Erro ao salvar paciente:", err);
+    }
   };
 
   return (
@@ -76,15 +69,15 @@ export default function FormularioPaciente({ onSalvar, dadosIniciais }: Props) {
 
         {finalizado && !modoEdicao ? (
           <div className="bg-green-100 p-6 rounded-xl space-y-4 text-green-800 shadow">
+            <p><strong>Nome:</strong> {formData.nome}</p>
             <p><strong>Prontuário:</strong> {formData.prontuario}</p>
-            <p><strong>CPF:</strong> {formData.cpf}</p>
             <p><strong>Sexo:</strong> {formData.sexo}</p>
             <p><strong>Data de Nascimento:</strong> {formData.dataDeNascimento}</p>
             <p><strong>Telefone do Paciente:</strong> {formData.telefonePaciente}</p>
             <p><strong>Médico que Indicou:</strong> {formData.medicoIndicacao}</p>
             <p><strong>Telefone do Médico:</strong> {formData.telefoneMedicoIndicacao}</p>
             <p><strong>Fototipo:</strong> {formData.fototipo}</p>
-
+            <p><strong>Resumo dos Tratamentos:</strong> {formData.resumoTratamentosAnteriores}</p>
             <div className="text-right">
               <button
                 onClick={() => setModoEdicao(true)}
@@ -97,42 +90,20 @@ export default function FormularioPaciente({ onSalvar, dadosIniciais }: Props) {
         ) : (
           <form onSubmit={handleSubmit} className="space-y-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {[{
-                label: "Prontuário",
-                name: "prontuario",
-                placeholder: "Número do prontuário",
-                type: "text",
-              }, {
-                label: "CPF",
-                name: "cpf",
-                placeholder: "000.000.000-00",
-                type: "text",
-              }, {
-                label: "Data de Nascimento",
-                name: "dataDeNascimento",
-                type: "date",
-              }, {
-                label: "Telefone do Paciente",
-                name: "telefonePaciente",
-                placeholder: "(00) 00000-0000",
-                type: "tel",
-              }, {
-                label: "Médico que Indicou",
-                name: "medicoIndicacao",
-                placeholder: "Nome do médico",
-                type: "text",
-              }, {
-                label: "Telefone do Médico",
-                name: "telefoneMedicoIndicacao",
-                placeholder: "(00) 00000-0000",
-                type: "tel",
-              }].map(({ label, name, placeholder, type }) => (
+              {[
+                { label: "Nome", name: "nome", placeholder: "Nome completo", type: "text" },
+                { label: "Prontuário", name: "prontuario", placeholder: "Número do prontuário", type: "text" },
+                { label: "Data de Nascimento", name: "dataDeNascimento", type: "date" },
+                { label: "Telefone do Paciente", name: "telefonePaciente", placeholder: "(00) 00000-0000", type: "tel" },
+                { label: "Médico que Indicou", name: "medicoIndicacao", placeholder: "Nome do médico", type: "text" },
+                { label: "Telefone do Médico", name: "telefoneMedicoIndicacao", placeholder: "(00) 00000-0000", type: "tel" },
+              ].map(({ label, name, placeholder, type }) => (
                 <div key={name}>
                   <label className="block text-green-700 font-medium mb-2">{label}</label>
                   <input
                     type={type}
                     name={name}
-                    value={formData[name as keyof Paciente] as string}
+                    value={formData[name as keyof PacienteCreationDto] as string}
                     onChange={handleChange}
                     className="w-full p-3 rounded-lg border border-green-300 focus:outline-none focus:ring-2 focus:ring-green-400 shadow-sm text-gray-700"
                     placeholder={placeholder}
@@ -141,40 +112,51 @@ export default function FormularioPaciente({ onSalvar, dadosIniciais }: Props) {
                 </div>
               ))}
 
-              <div className="flex items-start gap-8">
-                <div>
-                  <label className="block text-green-700 font-medium mb-2 text-left">Sexo</label>
-                  <select
-                    name="sexo"
-                    value={formData.sexo}
-                    onChange={handleChange}
-                    className="p-2 rounded-lg border border-green-300 focus:outline-none focus:ring-2 focus:ring-green-400 text-green-700"
-                    required
-                  >
-                    <option value="">Selecione</option>
-                    <option value="MASCULINO">Masculino</option>
-                    <option value="FEMININO">Feminino</option>
-                  </select>
-                </div>
+              {/* Sexo */}
+              <div>
+                <label className="block text-green-700 font-medium mb-2">Sexo</label>
+                <select
+                  name="sexo"
+                  value={formData.sexo ?? ""}
+                  onChange={handleChange}
+                  className="w-full p-3 rounded-lg border border-green-300 focus:outline-none focus:ring-2 focus:ring-green-400 text-green-700"
+                  required
+                >
+                  <option value="">Selecione</option>
+                  {PacienteSexoOptions.map(opt => (
+                    <option key={opt.value} value={opt.value}>{opt.label}</option>
+                  ))}
+                </select>
+              </div>
 
-                <div>
-                  <label className="block text-green-700 font-medium mb-2 text-left">Fototipo</label>
-                  <select
-                    name="fototipo"
-                    value={formData.fototipo}
-                    onChange={handleChange}
-                    className="p-2 rounded-lg border border-green-300 focus:outline-none focus:ring-2 focus:ring-green-400 text-green-700"
-                    required
-                  >
-                    <option value="">Selecione</option>
-                    <option value="I">I - Pele Branca</option>
-                    <option value="II">II - Pele Clara</option>
-                    <option value="III">III - Morena Clara</option>
-                    <option value="IV">IV - Morena Escura</option>
-                    <option value="V">V - Negra</option>
-                    <option value="VI">VI - Negra Profunda</option>
-                  </select>
-                </div>
+              {/* Fototipo */}
+              <div>
+                <label className="block text-green-700 font-medium mb-2">Fototipo</label>
+                <select
+                  name="fototipo"
+                  value={formData.fototipo ?? ""}
+                  onChange={handleChange}
+                  className="w-full p-3 rounded-lg border border-green-300 focus:outline-none focus:ring-2 focus:ring-green-400 text-green-700"
+                  required
+                >
+                  <option value="">Selecione</option>
+                  {FototipoOptions.map(opt => (
+                    <option key={opt.value} value={opt.value}>{opt.label}</option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Resumo dos tratamentos anteriores */}
+              <div className="md:col-span-2">
+                <label className="block text-green-700 font-medium mb-2">Resumo de Tratamentos Anteriores</label>
+                <textarea
+                  name="resumoTratamentosAnteriores"
+                  value={formData.resumoTratamentosAnteriores}
+                  onChange={handleChange}
+                  rows={4}
+                  className="w-full p-3 rounded-lg border border-green-300 focus:outline-none focus:ring-2 focus:ring-green-400 text-gray-700"
+                  placeholder="Descreva brevemente os tratamentos anteriores do paciente"
+                />
               </div>
             </div>
 
