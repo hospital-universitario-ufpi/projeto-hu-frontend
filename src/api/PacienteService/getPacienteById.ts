@@ -1,7 +1,13 @@
-import { PacienteDto } from "@/app/interface/dto/paciente/PacienteDto";
+
 import api from "..";
+import { PacienteDto } from '../../app/interface/dto/paciente/PacienteDto';
 
 export const getPacienteById = async (pacienteId: number): Promise<PacienteDto> => {
-    const response = await api.get(`/paciente/${pacienteId}`);
+  try {
+    const response = await api.get<PacienteDto>(`/pacientes/${pacienteId}`);
     return response.data;
+  }
+    catch (error) {
+    return Promise.reject(error);
+  }
 }
