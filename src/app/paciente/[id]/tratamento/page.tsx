@@ -195,6 +195,7 @@ export default function CriarTratamentoPage() {
       areaCorporal: mapaCorporalAuxiliar
     }
 
+
     try {
       await createTratamento(payload);
       setTratamentoSalvo(true);
