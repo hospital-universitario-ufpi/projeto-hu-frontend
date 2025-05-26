@@ -30,6 +30,7 @@ interface Tratamento {
   mapa: MapaCorporalData;
   exames: Exame[];
   particularidades: ParticularidadeData;
+  totalSessoesPrevistas?: number;
 }
 
 interface Sessao {
@@ -40,7 +41,6 @@ interface Sessao {
   observacoes: string;
   tempoExposicao: string;
 }
-
 
 export default function VisualizarPaciente() {
   const { id } = useParams();
@@ -55,6 +55,8 @@ export default function VisualizarPaciente() {
   const tratamentosPorPagina = 5;
 
   const [filtroData, setFiltroData] = useState("");
+
+  
 
   useEffect(() => {
     const pacienteArmazenado = localStorage.getItem(`paciente_${id}`);

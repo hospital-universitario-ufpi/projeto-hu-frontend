@@ -15,7 +15,9 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import MapaCorporal from "@/components/MapaCorporal";
 import SessaoExames, { Exame } from "@/components/SessaoExames";
-import Particularidade, { ParticularidadeData } from "@/components/Particularidade";
+import Particularidade, {
+  ParticularidadeData,
+} from "@/components/Particularidade";
 
 interface MapaCorporalData {
   [regiao: string]: number;
@@ -35,20 +37,24 @@ export default function CriarTratamentoPage() {
 
   const [mapa, setMapa] = useState<MapaCorporalData>({});
   const [exames, setExames] = useState<Exame[]>([]);
-  const [particularidades, setParticularidades] = useState<ParticularidadeData>({
-    usoDegrau: false,
-    descricaoUsoDegrau: "",
-    usoOculos: false,
-    descricaoUsoOculos: "",
-    exporFace: false,
-    descricaoExporFace: "",
-    protecaoGenital: false,
-    descricaoProtecaoGenital: "",
-    marcarPosicaoCabine: false,
-    descricaoPosicaoCabine: "",
-    marcarOutros: false,
-    descricaoOutros: "",
-  });
+  const [totalSessoes, setTotalSessoes] = useState(0);
+
+  const [particularidades, setParticularidades] = useState<ParticularidadeData>(
+    {
+      usoDegrau: false,
+      descricaoUsoDegrau: "",
+      usoOculos: false,
+      descricaoUsoOculos: "",
+      exporFace: false,
+      descricaoExporFace: "",
+      protecaoGenital: false,
+      descricaoProtecaoGenital: "",
+      marcarPosicaoCabine: false,
+      descricaoPosicaoCabine: "",
+      marcarOutros: false,
+      descricaoOutros: "",
+    }
+  );
 
   const [tratamentos, setTratamentos] = useState<Tratamento[]>([]);
   const [tratamentoSalvo, setTratamentoSalvo] = useState(false);
@@ -87,7 +93,22 @@ export default function CriarTratamentoPage() {
 
         <MapaCorporal onChange={setMapa} initialData={mapa} />
         <SessaoExames onChange={setExames} initialData={exames} />
-        <Particularidade onChange={setParticularidades} initialData={particularidades} />
+        <Particularidade
+          onChange={setParticularidades}
+          initialData={particularidades}
+        />
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-green-700 mb-1">
+            Total de Sessões Previstas
+          </label>
+          <input
+            type="number"
+            placeholder="Ex: 10"
+            className="border border-green-300 rounded-lg p-2 w-full"
+            value={totalSessoes}
+            onChange={(e) => setTotalSessoes(Number(e.target.value))}
+          />
+        </div>
 
         <div className="flex justify-center pt-4">
           <button
