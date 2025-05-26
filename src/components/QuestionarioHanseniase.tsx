@@ -2,7 +2,13 @@
 
 import React, { useState } from "react";
 
-export default function SecaoExames() {
+interface QuestionarioHanseniaseProps {
+  onFinalizar: () => void;
+}
+
+
+
+export default function QuestionarioHanseniase({ onFinalizar }: QuestionarioHanseniaseProps) {
   const [exames, setExames] = useState([
     {
       exameTipo: "",
@@ -209,6 +215,17 @@ export default function SecaoExames() {
           + Adicionar outro exame
         </button>
       </div>
+
+      <div className="pt-4 text-center">
+  <button
+    type="button"
+    onClick={onFinalizar}
+    className="bg-green-600 text-white px-6 py-3 rounded-full hover:bg-green-700 transition"
+  >
+    ✅ Finalizar Questionário
+  </button>
+</div>
+
     </section>
   );
 }

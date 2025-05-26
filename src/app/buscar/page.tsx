@@ -80,6 +80,14 @@ export default function BuscarPaciente() {
           </ul>
         )}
       </div>
+      <div className="text-center mt-10">
+        <Link
+          href="/"
+          className="inline-block bg-gray-100 hover:bg-gray-200 text-green-700 px-4 py-2 rounded transition"
+        >
+          ← Voltar para Página Inicial
+        </Link>
+      </div>
     </main>
   );
 }

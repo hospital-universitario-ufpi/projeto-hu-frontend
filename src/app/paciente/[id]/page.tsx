@@ -32,6 +32,16 @@ interface Tratamento {
   particularidades: ParticularidadeData;
 }
 
+interface Sessao {
+  id?: number;
+  dataSessao: string;
+  dose: string;
+  reacaoPosSessao: "NENHUMA" | "LEVE" | "MODERADA" | "GRAVE";
+  observacoes: string;
+  tempoExposicao: string;
+}
+
+
 export default function VisualizarPaciente() {
   const { id } = useParams();
   const [paciente, setPaciente] = useState<Paciente | null>(null);
@@ -130,6 +140,72 @@ export default function VisualizarPaciente() {
         ) : (
           <p className="text-center text-gray-500">Paciente não encontrado.</p>
         )}
+        {paciente && (
+          <div className="pt-6 border-t">
+            <h2 className="text-xl font-semibold text-green-700 mb-2">
+              Sessões Realizadas
+            </h2>
+
+            <div className="flex justify-end mb-4">
+              <div className="flex flex-col text-sm">
+                <label className="text-green-800 font-medium mb-1">
+                  Filtrar sessões por data:
+                </label>
+                <input
+                  type="date"
+                  value={filtroData}
+                  onChange={(e) => setFiltroData(e.target.value)}
+                  className="border border-green-300 rounded px-3 py-2 w-36 text-green-700"
+                />
+                {filtroData && (
+                  <button
+                    className="text-green-600 text-xs underline mt-1"
+                    onClick={() => setFiltroData("")}
+                  >
+                    Limpar filtro
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {(() => {
+              const sessoesKey = `sessoesPaciente:${paciente.id}`;
+              const sessoes: Sessao[] = JSON.parse(
+                localStorage.getItem(sessoesKey) || "[]"
+              );
+              const sessoesFiltradas = filtroData
+                ? sessoes.filter((s) => s.dataSessao === filtroData)
+                : sessoes;
+
+              if (sessoesFiltradas.length === 0) {
+                return (
+                  <p className="text-sm text-gray-500">
+                    Nenhuma sessão encontrada.
+                  </p>
+                );
+              }
+
+              return (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {sessoesFiltradas.map((sessao, idx) => (
+                    <div
+                      key={sessao.id || idx}
+                      className="bg-green-50 border border-green-300 p-4 rounded-lg shadow text-green-700 space-y-1"
+                    >
+                      <h4 className="font-semibold text-green-800">
+                        Sessão #{idx + 1} – {sessao.dataSessao}
+                      </h4>
+                      <p>→ Dose: {sessao.dose}</p>
+                      <p>→ Tempo de Exposição: {sessao.tempoExposicao} min</p>
+                      <p>→ Reação: {sessao.reacaoPosSessao}</p>
+                      <p>→ Observações: {sessao.observacoes || "Nenhuma"}</p>
+                    </div>
+                  ))}
+                </div>
+              );
+            })()}
+          </div>
+        )}
 
         <div className="pt-6 border-t">
           <h2 className="text-xl font-semibold text-green-700 mb-2">
@@ -142,6 +218,15 @@ export default function VisualizarPaciente() {
           >
             ➕ Criar Novo Tratamento
           </Link>
+
+          {tratamentos.length > 0 && (
+            <Link
+              href={`/paciente/${id}/sessao`}
+              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition text-sm inline-block mb-4 ml-4"
+            >
+              ➕ Criar Sessão
+            </Link>
+          )}
 
           <div className="flex justify-end mb-4">
             <div className="flex flex-col text-sm">

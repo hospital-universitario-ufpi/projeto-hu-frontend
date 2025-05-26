@@ -1,16 +1,14 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import FormularioPaciente, { Paciente } from './components/FormularioPaciente';
-import QuestionarioHanseniase from './components/QuestionarioHanseniase';
-
+import React, { useState } from 'react';
+import FormularioPaciente, { Paciente } from '../components/FormularioPaciente';
+import QuestionarioHanseniase from '../components/QuestionarioHanseniase';
+import SessaoTratamento from '../components/SessaoTratamento';
 
 export default function PageClient() {
   const [paciente, setPaciente] = useState<Paciente | null>(null);
   const [formFinalizado, setFormFinalizado] = useState(false);
-  const formRef = React.useRef<HTMLFormElement | null>(null);
+  const [questionarioFinalizado, setQuestionarioFinalizado] = useState(false);
 
   return (
     <div className="max-w-7xl mx-auto p-4">
@@ -21,16 +19,15 @@ export default function PageClient() {
             setFormFinalizado(true);
           }}
         />
-      ) : (
+      ) : !questionarioFinalizado ? (
         <QuestionarioHanseniase
-          formRef={formRef}
           onFinalizar={() => {
-            setFormFinalizado(false);
-            setPaciente(null);
+            setQuestionarioFinalizado(true);
           }}
         />
-      )}
+      ) : paciente?.id ? (
+        <SessaoTratamento idPaciente={paciente.id.toString()} />
+      ) : null}
     </div>
   );
 }
-
