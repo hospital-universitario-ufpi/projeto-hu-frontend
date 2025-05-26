@@ -15,7 +15,7 @@ export default function Header() {
             priority
           />
           <Image
-            src="/logo-ebserh.png"
+            src="/ebserh.png"
             alt="Logo EBSERH"
             width={100}
             height={100}

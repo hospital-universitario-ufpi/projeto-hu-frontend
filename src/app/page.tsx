@@ -1,15 +1,35 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+"use client";
 
+import Link from "next/link";
 
-import React from 'react'
-import { cookies } from 'next/headers'
-import PageClient from './PageClient';
-import { createClient } from '../utils/supabase/server';
+export default function HomePage() {
+  return (
+    <main className="min-h-screen px-4 py-10 bg-gray-50 flex flex-col items-center justify-start">
+      <div className="w-full max-w-3xl text-center">
+        <img src="/hu.png" alt="Logo" className="w-32 mx-auto mb-4" />
 
-export default function Page() {
-  const cookieStore = cookies();
-  const supabase = createClient(cookieStore);
+        <h1 className="text-2xl font-bold text-green-700 mb-15">
+          Sistema de Avaliação para Tratamento por Fototerapia
+        </h1>
 
-  return <PageClient />
+        <div className="flex flex-col gap-4 items-center">
+          {/* Botão 1 - Novo cadastro */}
+          <Link
+            href="/formulariopaciente"
+            className="bg-green-700 text-white px-6 py-3 rounded-full hover:bg-green-800 transition w-full max-w-sm text-center"
+          >
+            📝 Cadastrar Novo Paciente
+          </Link>
+
+          {/* Botão 2 - Procurar e editar */}
+          <Link
+            href="/buscar"
+            className="bg-blue-700 text-white px-6 py-3 rounded-full hover:bg-blue-800 transition w-full max-w-sm text-center"
+          >
+            🔍 Procurar / Editar Paciente
+          </Link>
+        </div>
+      </div>
+    </main>
+  );
 }
-
