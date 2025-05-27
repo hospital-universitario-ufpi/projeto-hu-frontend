@@ -4,6 +4,7 @@ import { PacienteDto } from "@/app/interface/dto/paciente/PacienteDto";
 import { TratamentoDto } from "@/app/interface/dto/tratamento/TratamentoDto";
 import { getPacienteById } from "@/api/PacienteService/getPacienteById";
 import { getTratamentosByPacienteId } from "@/api/TratamentoService/getTratamentosByPacienteId";
+import CardPaciente from "@/components/CardPaciente";
 
 type Props = {
   params: { id: string };
@@ -29,40 +30,7 @@ export default async function PacienteDetalhesPage({ params }: Props) {
   return (
     <main className="p-8 max-w-6xl mx-auto space-y-10">
       {/* DADOS DO PACIENTE */}
-      <section className="bg-white p-6 rounded-xl shadow space-y-4 border-l-4 border-green-600">
-    <h1 className="text-2xl font-bold text-green-700">Paciente: {paciente.nome}</h1>
-
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700">
-      <p>
-        <span className="font-semibold text-gray-800">Prontuário:</span>{" "}
-        {paciente.prontuario}
-      </p>
-      <p>
-        <span className="font-semibold text-gray-800">Sexo:</span>{" "}
-        {paciente.sexo}
-      </p>
-      <p>
-        <span className="font-semibold text-gray-800">Data de nascimento:</span>{" "}
-        {paciente.datadeNascimento}
-      </p>
-      <p>
-        <span className="font-semibold text-gray-800">Telefone:</span>{" "}
-        {paciente.telefonePaciente}
-      </p>
-      <p>
-        <span className="font-semibold text-gray-800">Indicação médica:</span>{" "}
-        {paciente.medicoIndicacao}
-      </p>
-      <p>
-        <span className="font-semibold text-gray-800">Telefone do médico:</span>{" "}
-        {paciente.telefoneMedicoIndicacao}
-      </p>
-      <p>
-        <span className="font-semibold text-gray-800">Fototipo:</span>{" "}
-        {paciente.fototipo}
-      </p>
-    </div>
-  </section>
+    <CardPaciente paciente={paciente}/>
 
       {/* BOTÃO DE NOVO TRATAMENTO */}
       <div className="flex justify-end">

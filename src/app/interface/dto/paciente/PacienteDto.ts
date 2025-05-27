@@ -10,7 +10,7 @@ export type PacienteDto = {
 
     sexo: PacienteSexo; // Sexo do paciente
 
-    datadeNascimento: string; // Data de nascimento do paciente. Ex: "1990-08-15"
+    dataDeNascimento: string; // Data de nascimento do paciente. Ex: "1990-08-15"
 
     medicoIndicacao: string; // Nome do médico que indicou o paciente. Ex: "Dr, Carlos Mendes"
 
