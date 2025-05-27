@@ -1,33 +1,35 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-
-const pacientesMock = [
-  {
-    id: 1,
-    nome: "João Silva",
-    prontuario: "P123",
-    cpf: "111.222.333-44",
-  },
-  {
-    id: 2,
-    nome: "Maria Souza",
-    prontuario: "P124",
-    cpf: "222.333.444-55",
-  },
-];
+import { getAllPaciente } from "@/api/PacienteService/getAllPaciente";
+import { getPacienteByProntuario } from "@/api/PacienteService/getPacienteByProntuario";
+import { useRouter } from "next/navigation";
 
 export default function BuscarPaciente() {
   const [busca, setBusca] = useState("");
+  const [pacientes, setPacientes] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const router = useRouter()
 
-  const pacientesFiltrados = pacientesMock.filter(
-    (p) =>
-      p.nome.toLowerCase().includes(busca.toLowerCase()) ||
-      p.prontuario.toLowerCase().includes(busca.toLowerCase()) ||
-      p.cpf.replace(/\D/g, "").includes(busca.replace(/\D/g, ""))
+  useEffect(() => {
+    setLoading(true)
+    getAllPaciente()
+      .then((data) => {
+        setPacientes(data);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));  
+  }, []);
+
+  const pacientesFiltrados = pacientes.filter((p) =>
+    p.prontuario?.toLowerCase().includes(busca.toLowerCase())
   );
 
+  const handleSubmit = async() =>{
+    const response = await getPacienteByProntuario(busca)
+    router.push(`/paciente/${response.id}`)
+  }
   return (
     <main className="min-h-screen px-4 py-10 bg-gray-50 flex flex-col items-center">
       <div className="w-full max-w-3xl">
@@ -35,17 +37,27 @@ export default function BuscarPaciente() {
           Buscar Paciente
         </h1>
 
-        <input
-          type="text"
-          placeholder="Digite nome ou Número do prontuário"
-          value={busca}
-          onChange={(e) => setBusca(e.target.value)}
-          className="w-full p-3 border border-green-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 mb-6 placeholder:text-green-700/40"
-        />
-        {pacientesFiltrados.length === 0 ? (
-          <p className="text-center text-gray-500">
-            Nenhum paciente encontrado.
-          </p>
+        <div className="flex gap-2 mb-6">
+          <input
+            type="text"
+            placeholder="Digite o número do prontuário"
+            value={busca}
+            onChange={(e) => setBusca(e.target.value)}
+            className="w-full p-3 border border-green-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 placeholder:text-green-700/40 text-green-700"
+          />
+          <button
+            type="button"
+            className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
+            onClick={handleSubmit}
+          >
+            Buscar
+          </button>
+        </div>
+
+        {loading ? (
+          <p className="text-center text-gray-500">Carregando pacientes...</p>
+        ) : pacientesFiltrados.length === 0 ? (
+          <p className="text-center text-gray-500">Nenhum paciente encontrado.</p>
         ) : (
           <ul className="space-y-4">
             {pacientesFiltrados.map((paciente) => (

@@ -6,7 +6,6 @@ import React, { useEffect, useState } from 'react';
 import FormularioPaciente, { Paciente } from './components/FormularioPaciente';
 import QuestionarioHanseniase from './components/QuestionarioHanseniase';
 
-
 export default function PageClient() {
   const [paciente, setPaciente] = useState<Paciente | null>(null);
   const [formFinalizado, setFormFinalizado] = useState(false);
