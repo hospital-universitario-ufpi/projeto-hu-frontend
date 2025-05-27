@@ -4,7 +4,7 @@ import { PacienteDto } from '../../app/interface/dto/paciente/PacienteDto';
 
 export const getPacienteById = async (pacienteId: number): Promise<PacienteDto> => {
   try {
-    const response = await api.get<PacienteDto>(`/pacientes/${pacienteId}`);
+    const response = await api.get<PacienteDto>(`/paciente/${pacienteId}`);
     return response.data;
   }
     catch (error) {
