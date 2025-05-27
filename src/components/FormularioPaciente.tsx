@@ -10,7 +10,7 @@ import { createPaciente } from "@/api/PacienteService/createPaciente";
 
 
 type Props = {
-  onSalvar?: (dados: PacienteDto) => void;
+  onSalvar?: (dados: PacienteCreationDto) => void;
   dadosIniciais?: PacienteCreationDto | null;
 };
 
