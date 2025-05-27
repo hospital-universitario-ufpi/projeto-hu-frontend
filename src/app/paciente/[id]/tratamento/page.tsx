@@ -75,18 +75,6 @@ export default function CriarTratamentoPage() {
     tratamentoId: null
   });
 
-  const mapaCorporalAuxiliar: AreaCorporalAcometidaCreationDto = {
-    cabecaPescoco: 0,
-    bracoDireito: 0,
-    bracoEsquerdo: 0,
-    pernaDireita: 0,
-    pernaEsquerda: 0,
-    troncoAnterior: 0,
-    troncoPosterior: 0,
-    genitalia: 0,
-    tratamentoId: null // pode deixar null, o back vai setar
-  };
-
 
   // HANDLERS
 

@@ -1,8 +1,10 @@
 'use client';
 
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 
 export default function Header() {
+  // const router = useRouter()
   return (
     <header className="bg-white py-6">
       <div className="max-w-7xl mx-auto flex flex-col items-center gap-4 px-4">
