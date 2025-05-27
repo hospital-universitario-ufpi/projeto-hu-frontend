@@ -5,7 +5,7 @@ import { PacienteDto } from "../../app/interface/dto/paciente/PacienteDto";
 
 export const createPaciente = async (paciente:PacienteCreationDto): Promise<PacienteDto> => {
     try {
-        const response = await api.post<PacienteDto>('/pacientes', paciente);
+        const response = await api.post<PacienteDto>('/paciente', paciente);
         return response.data;
     }
     catch (error) {
