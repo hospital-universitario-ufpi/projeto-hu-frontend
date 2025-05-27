@@ -12,7 +12,6 @@ import CardTratamentoDetails from "@/components/CardTratamentoDetails";
 import MapaCorporal from "@/components/MapaCorporal";
 
 import { useParams } from "next/navigation";
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 export default function TratamentoDetails() {
@@ -58,21 +57,29 @@ export default function TratamentoDetails() {
       {tratamento.exames.map((exame, index) => (
         <CardExame key={index} exame={exame}/>
       ))}
-      <h2 className="text-xl font-bold text-green-700 border-b border-green-300 pb-2 mt-10">
-        Sessões Realizadas
-      </h2>
 
+      <div className="flex justify-between items-center mt-10  text-green-700 border-b border-green-300 pb-2" >
+        <h2 className="text-xl font-bold text-green-700 ">
+          Sessões Realizadas
+        </h2>
+
+        <a
+          href={`/paciente/${id}/tratamento/${tratamentoId}/sessao`}
+          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition text-sm"
+        >
+          ➕ Nova Sessão
+        </a>
+      </div>
       {tratamento.sessoes && tratamento.sessoes.length > 0 ? (
       <div className="space-y-4 mt-4">
         {tratamento.sessoes.map((sessao) => (
           <CardSessao key={sessao.id} sessao={sessao} />
         ))}
       </div>
-) : (
-  <p className="text-gray-700 mt-2">Nenhuma sessão registrada até o momento.</p>
-)}
+      ) : (
+        <p className="text-gray-700 mt-2">Nenhuma sessão registrada até o momento.</p>
+      )}
 
-      <pre className="text-gray-800">{JSON.stringify(tratamento, null, 2)}</pre>
     </main>
   );
 }

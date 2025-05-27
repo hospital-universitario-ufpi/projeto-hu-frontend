@@ -9,7 +9,7 @@ export enum ReacaoTipo {
 
 export const ReacaoTipoOptions = [
     { value: ReacaoTipo.ARDENCIA, label: "Ardência" },
-    { value: ReacaoTipo.ERITEMA_LEVE, label: "Eritema leve" },
-    { value: ReacaoTipo.ERITEMA_SEVERO, label: "Eritema severo" },
+    { value: ReacaoTipo.ERITEMA_LEVE, label: "Eritema Leve" },
+    { value: ReacaoTipo.ERITEMA_SEVERO, label: "Eritema Severo" },
     { value: ReacaoTipo.BOLHAS, label: "Bolhas" }
 ]
