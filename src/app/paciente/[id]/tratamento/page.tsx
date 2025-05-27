@@ -16,6 +16,7 @@ import FormularioExames from "@/components/FormularioExames";
 import FormularioParticularidade from "@/components/FormularioParticularidade";
 import { TratamentoCreationRequest } from "@/app/interface/dto/tratamento/TratamentoCreationRequest";
 import { createTratamento } from "@/api/TratamentoService/createTratamento";
+import MapaCorporal from "@/components/MapaCorporal";
 
 export default function CriarTratamentoPage() {
   const { id } = useParams();
@@ -192,7 +193,7 @@ export default function CriarTratamentoPage() {
       tratamento: dadosTratamento,
       particularidade: particularidades,
       exames: exames,
-      areaCorporal: mapaCorporalAuxiliar
+      areaCorporal: mapaCorporal
     }
 
 
@@ -218,6 +219,7 @@ export default function CriarTratamentoPage() {
         <FormularioTratamento value={dadosTratamento} onChange={handleChangeDadosTratamento}/>
         <FormularioExames exames={exames} onChange={handleChangeExame} onAdd={handleAddExame} onRemove={handleRemoveExame}/>
         <FormularioParticularidade value={particularidades} onChange={handleChangeParticularidades}/>
+        <MapaCorporal initialData={mapaCorporal} onChange={(dados) => setMapaCorporal((prev) => ({...prev, ...dados}))}/>
 
         <div className="flex justify-center pt-4">
           <button
