@@ -1,4 +1,4 @@
-// File: C:\Users\victo\Documents\GitHub\projeto-hu-frontend\src\app\layout.tsx
+// File: /home/marcos/Área de Trabalho/projeto-hu-frontend/src/app/layout.tsx
 import * as entry from '../../../src/app/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

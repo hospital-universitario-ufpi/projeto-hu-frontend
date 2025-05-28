@@ -3,18 +3,14 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { PacienteCreationDto } from "@/app/interface/dto/paciente/PacienteCreationDto";
-import { PacienteDto } from "@/app/interface/dto/paciente/PacienteDto";
+
 import { PacienteSexoOptions } from "@/app/interface/enums/PacienteSexo";
 import { FototipoOptions } from "@/app/interface/enums/Fototipo";
 import { createPaciente } from "@/api/PacienteService/createPaciente";
 
 
-type Props = {
-  onSalvar?: (dados: PacienteCreationDto) => void;
-  dadosIniciais?: PacienteCreationDto | null;
-};
 
-export default function FormularioPaciente({ onSalvar, dadosIniciais }: Props) {
+export default function FormularioPaciente() {
   const router = useRouter();
 
   const [formData, setFormData] = useState<PacienteCreationDto>({
@@ -29,15 +25,10 @@ export default function FormularioPaciente({ onSalvar, dadosIniciais }: Props) {
     resumoTratamentosAnteriores: "",
   });
 
-  const [finalizado, setFinalizado] = useState(false);
-  const [modoEdicao, setModoEdicao] = useState(false);
+  // const [finalizado, setFinalizado] = useState(false);
+  // const [modoEdicao, setModoEdicao] = useState(false);
 
-  useEffect(() => {
-    if (dadosIniciais) {
-      setFormData(dadosIniciais);
-      setFinalizado(true);
-    }
-  }, [dadosIniciais]);
+
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
@@ -53,7 +44,6 @@ export default function FormularioPaciente({ onSalvar, dadosIniciais }: Props) {
     e.preventDefault();
     try {
       const pacienteSalvo = await createPaciente(formData);
-      if (onSalvar) onSalvar(pacienteSalvo);
       router.push(`/paciente/${pacienteSalvo.id}`);
     } catch (err) {
       console.error("Erro ao salvar paciente:", err);
@@ -64,30 +54,10 @@ export default function FormularioPaciente({ onSalvar, dadosIniciais }: Props) {
     <section className="w-full bg-white pt-2 md:pt-6">
       <div className="w-full max-w-7xl mx-auto px-4 md:px-8 bg-white rounded-xl pt-4 pb-6 md:pt-6 md:pb-8 relative">
         <h2 className="text-green-700 font-bold text-3xl text-center mb-10">
-          {finalizado && !modoEdicao ? "Dados do Paciente" : "Cadastro de Paciente"}
+        { /*finalizado && !modoEdicao ? "Dados do Paciente" : "Cadastro de Paciente" */}
         </h2>
 
-        {finalizado && !modoEdicao ? (
-          <div className="bg-green-100 p-6 rounded-xl space-y-4 text-green-800 shadow">
-            <p><strong>Nome:</strong> {formData.nome}</p>
-            <p><strong>Prontuário:</strong> {formData.prontuario}</p>
-            <p><strong>Sexo:</strong> {formData.sexo}</p>
-            <p><strong>Data de Nascimento:</strong> {formData.dataDeNascimento}</p>
-            <p><strong>Telefone do Paciente:</strong> {formData.telefonePaciente}</p>
-            <p><strong>Médico que Indicou:</strong> {formData.medicoIndicacao}</p>
-            <p><strong>Telefone do Médico:</strong> {formData.telefoneMedicoIndicacao}</p>
-            <p><strong>Fototipo:</strong> {formData.fototipo}</p>
-            <p><strong>Resumo dos Tratamentos:</strong> {formData.resumoTratamentosAnteriores}</p>
-            <div className="text-right">
-              <button
-                onClick={() => setModoEdicao(true)}
-                className="text-sm text-green-700 underline hover:text-green-900"
-              >
-                Editar Cadastro Paciente
-              </button>
-            </div>
-          </div>
-        ) : (
+ 
           <form onSubmit={handleSubmit} className="space-y-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {[
@@ -165,11 +135,11 @@ export default function FormularioPaciente({ onSalvar, dadosIniciais }: Props) {
                 type="submit"
                 className="bg-gradient-to-r from-green-500 to-green-700 hover:from-green-600 hover:to-green-800 text-white font-bold px-8 py-4 rounded-full shadow-md transition"
               >
-                {dadosIniciais || modoEdicao ? "Salvar Alterações" : "Finalizar Cadastro"}
+                Finalizar Cadastro
               </button>
             </div>
           </form>
-        )}
+      
       </div>
     </section>
   );
