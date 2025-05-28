@@ -21,7 +21,7 @@ src/
 │   └── entidadeSchema.ts
 ├── store/
 │   └── entidadeStore.ts
-├── utils/
+├── formUtils/
 │   └── entidadeFormToDto.ts
 ```
 
