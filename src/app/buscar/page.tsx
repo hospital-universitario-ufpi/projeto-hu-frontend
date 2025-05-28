@@ -3,12 +3,14 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { getAllPaciente } from "@/api/PacienteService/getAllPaciente";
-import { getPacienteByProntuario } from "@/api/PacienteService/getPacienteByProntuario";
+
+
 import { useRouter } from "next/navigation";
+import { getPacienteByProntuario } from "@/api/PacienteService/getPacienteByProntuario";
 
 export default function BuscarPaciente() {
   const [busca, setBusca] = useState("");
-  const [pacientes, setPacientes] = useState<any[]>([]);
+  const [pacientes, setPacientes] = useState([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter()
 
@@ -21,6 +23,7 @@ export default function BuscarPaciente() {
       })
       .catch(() => setLoading(false));  
   }, []);
+
 
   const pacientesFiltrados = pacientes.filter((p) =>
     p.prontuario?.toLowerCase().includes(busca.toLowerCase())
