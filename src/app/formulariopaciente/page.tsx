@@ -4,10 +4,8 @@ import React, { useState } from "react";
 import FormularioPaciente from "@/components/FormularioPaciente";
 import Link from "next/link";
 
-// Defina o tipo Paciente ou importe de onde ele está definido
 type Paciente = {
   id: number;
-  // adicione outros campos conforme necessário
 };
 
 export default function FormularioPage() {
