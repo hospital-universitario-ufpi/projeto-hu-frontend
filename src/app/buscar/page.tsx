@@ -73,7 +73,7 @@ export default function BuscarPaciente() {
                     {paciente.nome}
                   </p>
                   <p className="text-sm text-gray-600">
-                    Prontuário: {paciente.prontuario} | CPF: {paciente.cpf}
+                    Prontuário: {paciente.prontuario}
                   </p>
                 </div>
                 <div className="flex gap-2">
