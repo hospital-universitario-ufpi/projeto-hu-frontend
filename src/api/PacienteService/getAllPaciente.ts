@@ -1,3 +1,4 @@
+
 import { PacienteDto } from "@/app/interface/dto/paciente/PacienteDto"
 import api from ".."
 

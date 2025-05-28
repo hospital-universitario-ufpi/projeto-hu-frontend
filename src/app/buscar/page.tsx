@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { getAllPaciente } from "@/api/PacienteService/getAllPaciente";
 
+
 import { useRouter } from "next/navigation";
 import { getPacienteByProntuario } from "@/api/PacienteService/getPacienteByProntuario";
 
@@ -22,6 +23,7 @@ export default function BuscarPaciente() {
       })
       .catch(() => setLoading(false));  
   }, []);
+
 
   const pacientesFiltrados = pacientes.filter((p) =>
     p.prontuario?.toLowerCase().includes(busca.toLowerCase())
