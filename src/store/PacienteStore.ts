@@ -14,7 +14,9 @@ interface PacienteState {
   clearPacienteDtoList: () => void;
 
   setPacienteUpdate: (pacienteUpdate: PacienteDto) => void;
-  clearPacienteUpdate: () => void
+  clearPacienteUpdate: () => void;
+
+  clearAll: () => void;
 }
 
 export const usePacienteStore = create<PacienteState>()(
@@ -31,7 +33,12 @@ export const usePacienteStore = create<PacienteState>()(
       clearPacienteDtoList: () => set({ pacienteDtoList: [] }),
 
       setPacienteUpdate: (pacienteUpdate) => set({ pacienteUpdate }),
-      clearPacienteUpdate: () => set({pacienteUpdate: null})
+      clearPacienteUpdate: () => set({pacienteUpdate: null}),
+
+      clearAll: () => set({
+        pacienteDto: null,
+        pacienteUpdate: null
+      })
     }),
     {
       name: "paciente-store",

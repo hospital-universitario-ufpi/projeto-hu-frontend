@@ -1,8 +1,10 @@
 "use client";
 
+import { usePacienteStore } from "@/store/PacienteStore";
 import Link from "next/link";
 
 export default function HomePage() {
+
   return (
     <main className="min-h-screen px-4 py-10 bg-gray-50 flex flex-col items-center justify-start">
       <div className="w-full max-w-3xl text-center">
