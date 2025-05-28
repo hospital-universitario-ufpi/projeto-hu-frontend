@@ -1,6 +1,87 @@
 
 # PROJETO HU FRONTEND
 
+## 🧠 Arquitetura do Projeto
+
+<details>
+<summary><strong>Visão Geral da Estrutura do Projeto</strong></summary>
+
+### 🎯 Objetivo da Arquitetura
+
+Essa estrutura foi desenhada para garantir **escalabilidade**, **reutilização**, **clareza de responsabilidades** e **fácil manutenção**. Cada camada tem um papel bem definido, promovendo uma separação de preocupações (SoC - *Separation of Concerns*).
+
+### 📁 Organização Modular
+
+#### 1. DTOs e Enums – `src/app/interface/dto/` + `src/app/interface/enums/`
+- **Responsabilidade:** Formatos dos dados trocados com a API
+- Exemplo: `PacienteCreationDto`, `PacienteDto`, `Fototipo`, `PacienteSexo`
+- Motivação: Contratos claros entre backend e frontend
+
+#### 2. Schemas de Validação (Zod) – `src/schemas/`
+- **Responsabilidade:** Validar e tipar dados do formulário
+- Exemplo: `pacienteSchema`, `PacienteFormData`
+- Motivação: Evita redundância entre validação e tipagem
+
+#### 3. Store Global (Zustand) – `src/store/`
+- **Responsabilidade:** Gerenciar estado global de pacientes
+- Exemplo: `usePacienteStore`
+- Motivação: Leve, sem provider, ideal para apps médios
+
+#### 4. Adaptadores (Form Utils) – `src/formUtils/`
+- **Responsabilidade:** Transformar dados do form para DTO da API
+- Exemplo: `toPacienteCreationDto`
+- Motivação: Centraliza lógica de transformação, melhora manutenção
+
+#### 5. Componentes – `src/components/`
+- **Responsabilidade:** Formulários com RHF + Zod
+- Exemplo: `FormularioPaciente.tsx`
+- Motivação: Formulário reutilizável para criação e edição
+
+#### 6. API Layer – `src/api/`
+- **Responsabilidade:** Comunicação HTTP com backend
+- Exemplo: `createPaciente.ts`, `updatePaciente.ts`
+- Motivação: Desacoplamento da lógica de rede
+
+#### 7. Páginas – `app/`
+- **Responsabilidade:** Orquestração de layout e navegação
+- Exemplo: `app/paciente/novo`, `app/paciente/[id]`
+- Motivação: Redirecionamentos, uso de estado da store
+
+### 🔄 Fluxo Visual
+
+```plaintext
+[Página]
+   |
+   | -> usa usePacienteStore()
+   | -> define pacienteUpdate (edição) ou limpa tudo (criação)
+   |
+[FormularioPaciente.tsx]
+   |
+   | -> React Hook Form (useForm)
+   | -> register() nos campos
+   | -> validação via Zod
+   |
+   | onSubmit:
+   |    - usa toPacienteCreationDto()
+   |    - chama service de API (create ou update)
+   |    - atualiza store (setPacienteDto, clearPacienteUpdate)
+   |    - redireciona com router.push()
+```
+
+### 💡 Benefícios da Arquitetura
+
+| Recurso                    | Justificativa Técnica                                                                 |
+| -------------------------- | ------------------------------------------------------------------------------------- |
+| DTO + Enum separadamente   | Contratos claros entre backend e frontend                                             |
+| Zod para validação         | Evita ifs manuais. Validação declarativa e tipada                                    |
+| RHF com `register()`       | Reduz código. Integra bem com Zod. Performance otimizada                             |
+| Zustand                    | Estado global simples, reativo e sem boilerplate                                     |
+| Separação em `formUtils`   | Isola regras de conversão de dados para reuso e clareza                              |
+| Formulário reutilizável    | Um único componente serve para criar e editar                                        |
+| Persistência Zustand       | Mantém dados entre páginas sem necessidade de refetch                                |
+
+</details>
+
 ## 🧭 Instrução: Formulários
 
 <details>
