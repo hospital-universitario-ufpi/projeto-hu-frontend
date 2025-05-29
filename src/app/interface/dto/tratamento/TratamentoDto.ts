@@ -1,6 +1,7 @@
 import { DiaSemana } from "../../enums/DiaSemana";
 import { RespostaTratamento } from "../../enums/RespostaTratamento";
 import { AreaCorporalAcometidaDto } from "../areaCorporalAcometida/AreaCorporalAcometidaDto";
+import { ExameDto } from "../exame/ExameDto";
 import { ParticularidadeDto } from "../particularidade/ParticularidadeDto";
 import { SessaoDto } from "../sessao/SessaoDto";
 
@@ -30,4 +31,6 @@ export type TratamentoDto = {
     sessoes: SessaoDto[]; // Lista de sessões realizadas durante o tratamento.
 
     particularidade: ParticularidadeDto; // Particularidades específicas do paciente durante o tratamento.
+
+    exames: ExameDto[]
 };

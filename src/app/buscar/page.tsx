@@ -3,26 +3,30 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { getAllPaciente } from "@/api/PacienteService/getAllPaciente";
-import { getPacienteByProntuario } from "@/api/PacienteService/getPacienteByProntuario";
+
+
 import { useRouter } from "next/navigation";
+import { getPacienteByProntuario } from "@/api/PacienteService/getPacienteByProntuario";
+import { usePacienteStore } from "@/store/PacienteStore";
 
 export default function BuscarPaciente() {
   const [busca, setBusca] = useState("");
-  const [pacientes, setPacientes] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter()
+  const {setPacienteDtoList, pacienteDtoList, setPacienteUpdate, setPacienteDto} = usePacienteStore();
 
   useEffect(() => {
     setLoading(true)
     getAllPaciente()
       .then((data) => {
-        setPacientes(data);
+        setPacienteDtoList(data);
         setLoading(false);
       })
       .catch(() => setLoading(false));  
   }, []);
 
-  const pacientesFiltrados = pacientes.filter((p) =>
+
+  const pacientesFiltrados = pacienteDtoList.filter((p) =>
     p.prontuario?.toLowerCase().includes(busca.toLowerCase())
   );
 
@@ -70,18 +74,24 @@ export default function BuscarPaciente() {
                     {paciente.nome}
                   </p>
                   <p className="text-sm text-gray-600">
-                    Prontuário: {paciente.prontuario} | CPF: {paciente.cpf}
+                    Prontuário: {paciente.prontuario}
                   </p>
                 </div>
                 <div className="flex gap-2">
                   <Link
-                    href={`/paciente/${paciente.id}`}
+                    href={`/formulariopaciente`}
+                    onClick={() => {
+                      setPacienteUpdate(paciente)
+                    }}
                     className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
                   >
                     Editar
                   </Link>
                   <Link
                     href={`/paciente/${paciente.id}`}
+                    onClick={() => {
+                      setPacienteDto(paciente)
+                    }}
                     className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition text-sm"
                   >
                     Visualizar
