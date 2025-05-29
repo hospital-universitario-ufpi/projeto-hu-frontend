@@ -39,7 +39,6 @@ export default function FormularioPaciente() {
         const response = await updatePaciente(pacienteUpdate.id, toPacienteCreationDto(data));
         setPacienteDto(response);
         router.push(`/paciente/${pacienteUpdate.id}`);
-        console.log("Simulando edição:", data);
         setTimeout(() => clearPacienteUpdate(), 500);
       } else {
         const response = await createPaciente(toPacienteCreationDto(data));
