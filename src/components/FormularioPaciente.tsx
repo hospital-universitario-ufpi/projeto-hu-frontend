@@ -36,10 +36,12 @@ export default function FormularioPaciente() {
   const onSubmit = async (data: PacienteFormData) => {
     try {
       if (pacienteUpdate) {
+        console.log(data)
         const response = await updatePaciente(pacienteUpdate.id, toPacienteCreationDto(data));
+        console.log(response)
         setPacienteDto(response);
         router.push(`/paciente/${pacienteUpdate.id}`);
-        setTimeout(() => clearPacienteUpdate(), 500);
+        setTimeout(() => clearPacienteUpdate(), 700);
       } else {
         const response = await createPaciente(toPacienteCreationDto(data));
         setPacienteDto(response)
