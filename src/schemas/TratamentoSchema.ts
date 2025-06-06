@@ -3,7 +3,7 @@ import { DiaSemana } from "@/app/interface/enums/DiaSemana";
 import { RespostaTratamento } from "@/app/interface/enums/RespostaTratamento";
 
 export const tratamentoSchema = z.object({
-  pacienteId: z.union([z.string(), z.number()]), // Aceita string ou number, ajuste conforme seu form
+  pacienteId: z.number(), 
   nomeTratamento: z.string().min(1, "Nome do tratamento é obrigatório"),
   dataInicio: z.string().min(1, "Data de início é obrigatória"),
   dataFim: z.string().min(1, "Data de fim é obrigatória"),
