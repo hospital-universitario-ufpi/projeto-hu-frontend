@@ -12,11 +12,13 @@ import { usePacienteStore } from "@/store/PacienteStore";
 import { useForm } from "react-hook-form";
 import { PacienteFormData, pacienteSchema } from "@/schemas/PacienteSchema";
 import { toPacienteCreationDto } from "@/formUtils/PacienteFormToDto";
+import { toast } from "react-toastify";
+import { handleApiError } from "@/utils/handleApiError";
 
 
 export default function FormularioPaciente() {
   const router = useRouter();
-  const { pacienteUpdate, clearPacienteUpdate, setPacienteDto } = usePacienteStore();
+  const { pacienteUpdate, clearPacienteUpdate, setPacienteDto, pacienteDto } = usePacienteStore();
 
   const {
     register,
@@ -27,26 +29,32 @@ export default function FormularioPaciente() {
     resolver: zodResolver(pacienteSchema),
   });
 
+  console.log(usePacienteStore())
+
   useEffect(() => {
+    
     if (pacienteUpdate) {
       reset(pacienteUpdate);
     }
   }, [pacienteUpdate, reset]);
 
   const onSubmit = async (data: PacienteFormData) => {
-    try {
+    
       if (pacienteUpdate) {
         // chamar service de update
         // chamar clearPacienteUpdate
         console.log("Simulando edição:", data);
       } else {
-        const response = await createPaciente(toPacienteCreationDto(data));
-        setPacienteDto(response)
-        router.push(`/paciente/${response.id}`);
+        // const response = await createPaciente(toPacienteCreationDto(data));
+        await createPaciente(toPacienteCreationDto(data))
+        .then((response) => setPacienteDto(response))
+        .then(() => router.push(`/paciente/${pacienteDto.id}`))
+        .catch((error) => handleApiError(error))
+        // setPacienteDto(response)
+        
+        // router.push(`/paciente/${response.id}`);
       }
-    } catch (error) {
-      console.error("Erro ao salvar paciente:", error);
-    }
+    
   };
 
   return (

@@ -1,3 +1,4 @@
+import { useAuth } from "@/hooks/useAuth";
 import { useAuthStore } from "@/store/AuthStore";
 import axios from "axios";
 
@@ -18,5 +19,16 @@ api.interceptors.request.use((config) => {
     }
     return config;
 })
+
+api.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        const status = error?.response?.status;
+
+        if (status === 401 || status == 403) {
+            useAuth().logout();
+        }
+    }
+)
 
 export default api;

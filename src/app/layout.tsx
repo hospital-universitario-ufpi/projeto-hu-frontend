@@ -3,6 +3,7 @@ import './globals.css';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import type { Metadata } from 'next';
+import { ToastContainer } from 'react-toastify';
 
 
 
@@ -30,6 +31,7 @@ export default function RootLayout({
         </main>
         
         <Footer />
+        <ToastContainer position="top-right" autoClose={4000}/>
       </body>
     </html>
   );

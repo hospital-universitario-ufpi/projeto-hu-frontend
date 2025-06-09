@@ -5,6 +5,7 @@ import { useState } from "react";
 
 import { useAuth } from "@/hooks/useAuth";
 import { loginService } from "@/api/auth/login";
+import { toast } from "react-toastify";
 
 export default function LoginForm() {
   const { login } = useAuth();
@@ -18,6 +19,7 @@ export default function LoginForm() {
       const response = await loginService({email, password });
       console.log(response)
       login(response.token);
+      toast.success(`Bem Vindo`)
     } catch (err) {
       setErro("Email ou senha inválidos");
     }

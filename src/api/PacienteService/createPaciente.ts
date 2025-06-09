@@ -1,4 +1,5 @@
 
+import { toast } from "react-toastify";
 import api from "..";
 import { PacienteCreationDto } from "../../app/interface/dto/paciente/PacienteCreationDto";
 import { PacienteDto } from "../../app/interface/dto/paciente/PacienteDto";
@@ -9,6 +10,7 @@ export const createPaciente = async (paciente:PacienteCreationDto): Promise<Paci
         return response.data;
     }
     catch (error) {
-        return Promise.reject(error);
+        toast.error(error)
+        
     }
 }

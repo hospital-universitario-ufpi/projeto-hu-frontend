@@ -1,6 +1,7 @@
 import { useAuthStore } from "@/store/AuthStore";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { toast } from "react-toastify";
 
 
 export const useAuth = () => {
@@ -15,14 +16,16 @@ export const useAuth = () => {
 
   const logout = () => {
     clearToken();
-    console.log("hook logout")
     router.push("/login");
+    console.log("hook logout")
+    toast.success("Usuário desconectado")
   };
 
   useEffect(() => {
     const verify = async () => {
       const isValid = await validateToken();
       if (!isValid) {
+        toast.error("Token invalido")
         clearToken();
         router.replace("/login");
       }
