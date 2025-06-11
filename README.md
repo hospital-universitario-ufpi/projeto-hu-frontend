@@ -460,3 +460,34 @@ export default function FormularioPaciente() {
 ```
 
 </details>
+
+## ✅ Validações de Formulários
+
+<details>
+<summary><strong>Paciente</strong></summary>
+
+### 📋 Schema de Validação – Paciente
+
+O formulário de cadastro/edição de pacientes é validado no front-end com **Zod** de forma declarativa, garantindo alinhamento com as regras de negócio aplicadas no backend (Java + Bean Validation).
+
+#### 📑 Regras aplicadas (`pacienteSchema`)
+
+| Campo                        | Tipo     | Obrigatório | Regras de Validação                                                                 |
+|-----------------------------|----------|-------------|--------------------------------------------------------------------------------------|
+| `nome`                      | string   | ✅ Sim       | Mínimo 2, Máximo 100 caracteres                                                     |
+| `prontuario`                | string   | ✅ Sim       | Mínimo 1, Máximo 50 caracteres                                                      |
+| `sexo`                      | enum     | ✅ Sim       | Enum `PacienteSexo`, obrigatório                                                    |
+| `dataDeNascimento`          | string   | ✅ Sim       | Mínimo 1, formato `YYYY-MM-DD` (validado como passada no backend)                  |
+| `medicoIndicacao`           | string   | ❌ Não       | Máximo 100 caracteres                                                               |
+| `telefoneMedicoIndicacao`   | string   | ❌ Não       | Regex: 10 a 15 dígitos numéricos                                                    |
+| `telefonePaciente`          | string   | ❌ Não       | Regex: 10 a 15 dígitos numéricos                                                    |
+| `fototipo`                  | enum     | ✅ Sim       | Enum `Fototipo`, obrigatório                                                        |
+| `resumoTratamentosAnteriores` | string | ❌ Não       | Máximo 3000 caracteres                                                              |
+
+#### 💡 Observações
+
+- Os campos obrigatórios são validados diretamente com `.min()` ou `.nativeEnum()` com `required_error`.
+- Campos opcionais são enviados como `""` via DTO se não preenchidos, evitando `undefined` ou `null`.
+- O formato da data é `"YYYY-MM-DD"` (compatível com `<input type="date">`), mas será transformado no backend para `"dd-MM-yyyy"` na resposta.
+
+</details>
