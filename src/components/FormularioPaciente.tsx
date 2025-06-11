@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { PacienteCreationDto } from "@/app/interface/dto/paciente/PacienteCreationDto";
 import { zodResolver } from "@hookform/resolvers/zod"
-
+import { updatePaciente } from "@/api/PacienteService/updatePaciente";
 import { PacienteSexoOptions } from "@/app/interface/enums/PacienteSexo";
 import { FototipoOptions } from "@/app/interface/enums/Fototipo";
 import { createPaciente } from "@/api/PacienteService/createPaciente";
@@ -41,9 +41,12 @@ export default function FormularioPaciente() {
   const onSubmit = async (data: PacienteFormData) => {
     
       if (pacienteUpdate) {
-        // chamar service de update
-        // chamar clearPacienteUpdate
-        console.log("Simulando edição:", data);
+        console.log(data)
+        const response = await updatePaciente(pacienteUpdate.id, toPacienteCreationDto(data));
+        console.log(response)
+        setPacienteDto(response);
+        router.push(`/paciente/${pacienteUpdate.id}`);
+        setTimeout(() => clearPacienteUpdate(), 700);
       } else {
         // const response = await createPaciente(toPacienteCreationDto(data));
         await createPaciente(toPacienteCreationDto(data))
