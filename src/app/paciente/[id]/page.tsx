@@ -30,7 +30,7 @@ export default async function PacienteDetalhesPage({ params }: Props) {
   return (
     <main className="p-8 max-w-6xl mx-auto space-y-10">
       {/* DADOS DO PACIENTE */}
-    <CardPaciente paciente={paciente}/>
+      <CardPaciente paciente={paciente} />
 
       {/* BOTÃO DE NOVO TRATAMENTO */}
       <div className="flex justify-end">
@@ -44,7 +44,9 @@ export default async function PacienteDetalhesPage({ params }: Props) {
 
       {/* LISTAGEM DE TRATAMENTOS */}
       <section className="bg-white p-6 rounded-xl shadow border border-gray-200 space-y-6">
-        <h2 className="text-xl font-bold text-green-700 mb-4">Histórico de Tratamentos</h2>
+        <h2 className="text-xl font-bold text-green-700 mb-4">
+          Histórico de Tratamentos
+        </h2>
 
         {tratamentos.length === 0 ? (
           <p className="text-gray-500">Nenhum tratamento cadastrado ainda.</p>
@@ -70,16 +72,27 @@ export default async function PacienteDetalhesPage({ params }: Props) {
                       )}
                     </h3>
                     <p className="text-sm text-gray-600">
-                      {t.dataInicio} → {t.dataFim} | Sessões: {t.frequenciaTratamento}x/semana
+                      {t.dataInicio} → {t.dataFim} | Sessões:{" "}
+                      {t.frequenciaTratamento}x/semana
                     </p>
-                    <p className="text-sm text-gray-600">Diagnóstico: {t.diagnostico}</p>
+                    <p className="text-sm text-gray-600">
+                      Diagnóstico: {t.diagnostico}
+                    </p>
                   </div>
-                  <Link
-                    href={`/paciente/${id}/tratamento/${t.tratamentoId}`}
-                    className="text-sm underline text-green-600 hover:text-green-800"
-                  >
-                    Detalhes →
-                  </Link>
+                  <div className="flex gap-2">
+                    <Link
+                      href={`/paciente/${id}/tratamento/${t.tratamentoId}`}
+                      className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 text-sm font-semibold transition"
+                    >
+                      Detalhes
+                    </Link>
+                    <Link
+                      href={`/paciente/${id}/tratamento/${t.tratamentoId}/editar`}
+                      className="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600 text-sm font-semibold transition"
+                    >
+                      Editar
+                    </Link>
+                  </div>
                 </div>
               </li>
             ))}
